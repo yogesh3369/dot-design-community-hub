@@ -1,7 +1,7 @@
 
 import Header from '@/components/Header';
 import Hero from '@/components/Hero';
-import Features from '@/components/Features';
+import WhyJoinUs from '@/components/WhyJoinUs';
 import Footer from '@/components/Footer';
 
 const Index = () => {
@@ -10,7 +10,7 @@ const Index = () => {
       <Header />
       <main className="flex-grow pt-20">
         <Hero />
-        <Features />
+        <WhyJoinUs />
         {/* More sections would be added here in future iterations */}
       </main>
       <Footer />
