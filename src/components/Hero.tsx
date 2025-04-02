@@ -1,10 +1,7 @@
-
 import { Button } from "@/components/ui/button";
 import { ChevronRight } from "lucide-react";
-
 const Hero = () => {
-  return (
-    <section className="relative pt-20 pb-32 overflow-hidden">
+  return <section className="relative pt-20 pb-32 overflow-hidden">
       {/* Background gradient and effects */}
       <div className="absolute inset-0 bg-lbd-dark z-0">
         <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-lbd-dark to-lbd-dark-accent opacity-80"></div>
@@ -29,9 +26,7 @@ const Hero = () => {
               <ChevronRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
             </Button>
             
-            <Button variant="outline" className="border-lbd-white/20 text-lg hover:bg-lbd-dark-accent w-full sm:w-auto">
-              Explore Resources
-            </Button>
+            
           </div>
           
           <div className="mt-16 flex items-center justify-center space-x-8">
@@ -56,8 +51,6 @@ const Hero = () => {
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default Hero;
