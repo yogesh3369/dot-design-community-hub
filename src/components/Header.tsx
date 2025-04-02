@@ -1,34 +1,26 @@
-
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Menu, X } from 'lucide-react';
-
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrollPosition, setScrollPosition] = useState(0);
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollTop, setLastScrollTop] = useState(0);
-
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
-
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollPos = window.scrollY;
       const visible = lastScrollTop > currentScrollPos || currentScrollPos < 10;
-      
       setIsVisible(visible);
       setLastScrollTop(currentScrollPos);
       setScrollPosition(currentScrollPos);
     };
-
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollTop]);
-
-  return (
-    <header className={`w-full py-6 fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrollPosition > 10 ? 'bg-lbd-dark/90 backdrop-blur-lg shadow-lg' : 'bg-transparent'} ${isVisible ? 'translate-y-0' : '-translate-y-full'}`}>
+  return <header className={`w-full py-6 fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrollPosition > 10 ? 'bg-lbd-dark/90 backdrop-blur-lg shadow-lg' : 'bg-transparent'} ${isVisible ? 'translate-y-0' : '-translate-y-full'}`}>
       <div className="container-custom flex items-center justify-between">
         {/* Logo */}
         <div className="flex items-center">
@@ -41,12 +33,8 @@ const Header = () => {
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-8">
-          <a href="#features" className="text-lbd-white hover:text-lbd-pink py-2 relative after:absolute after:bottom-0 after:left-0 after:bg-lbd-pink after:h-0.5 after:w-0 hover:after:w-full after:transition-all after:duration-300">
-            Features
-          </a>
-          <a href="#resources" className="text-lbd-white hover:text-lbd-pink py-2 relative after:absolute after:bottom-0 after:left-0 after:bg-lbd-pink after:h-0.5 after:w-0 hover:after:w-full after:transition-all after:duration-300">
-            Resources
-          </a>
+          
+          
           <a href="#community" className="text-lbd-white hover:text-lbd-pink py-2 relative after:absolute after:bottom-0 after:left-0 after:bg-lbd-pink after:h-0.5 after:w-0 hover:after:w-full after:transition-all after:duration-300">
             Community
           </a>
@@ -83,7 +71,6 @@ const Header = () => {
             <Button className="btn-primary w-full">Join Our Community</Button>
           </div>
         </div>}
-    </header>
-  );
+    </header>;
 };
 export default Header;
