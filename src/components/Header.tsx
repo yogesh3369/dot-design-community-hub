@@ -35,12 +35,8 @@ const Header = () => {
         <nav className="hidden md:flex items-center space-x-8">
           
           
-          <a href="#community" className="text-lbd-white hover:text-lbd-pink py-2 relative after:absolute after:bottom-0 after:left-0 after:bg-lbd-pink after:h-0.5 after:w-0 hover:after:w-full after:transition-all after:duration-300">
-            Community
-          </a>
-          <a href="#blog" className="text-lbd-white hover:text-lbd-pink py-2 relative after:absolute after:bottom-0 after:left-0 after:bg-lbd-pink after:h-0.5 after:w-0 hover:after:w-full after:transition-all after:duration-300">
-            Blog
-          </a>
+          
+          
           <Button className="btn-primary relative overflow-hidden group">
             <span className="relative z-10">Join Our Community</span>
             <span className="absolute inset-0 bg-white/20 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></span>
