@@ -6,6 +6,8 @@ import ValueProposition from '@/components/ValueProposition';
 import CommunityFeatures from '@/components/CommunityFeatures';
 import DayInLife from '@/components/DayInLife';
 import Testimonials from '@/components/Testimonials';
+import FaqSupport from '@/components/FaqSupport';
+import JoinNow from '@/components/JoinNow';
 import Footer from '@/components/Footer';
 
 const Index = () => {
@@ -19,6 +21,8 @@ const Index = () => {
         <CommunityFeatures />
         <DayInLife />
         <Testimonials />
+        <FaqSupport />
+        <JoinNow />
         {/* More sections would be added here in future iterations */}
       </main>
       <Footer />
