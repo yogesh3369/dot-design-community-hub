@@ -2,7 +2,7 @@
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
-import { Quote } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Quote } from 'lucide-react';
 
 interface Testimonial {
   quote: string;
@@ -36,6 +36,14 @@ const Testimonials = () => {
     }
   ];
 
+  const nextTestimonial = () => {
+    setActiveIndex((prev) => (prev + 1) % testimonials.length);
+  };
+
+  const prevTestimonial = () => {
+    setActiveIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
+  };
+
   return (
     <section id="testimonials" className="py-24 bg-lbd-dark relative overflow-hidden">
       {/* Animated background elements */}
@@ -44,13 +52,13 @@ const Testimonials = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 0.1 }}
           transition={{ duration: 2, repeat: Infinity, repeatType: "reverse" }}
-          className="absolute -top-32 -right-32 w-96 h-96 rounded-full bg-lbd-pink/30 filter blur-[100px]"
+          className="absolute top-0 right-0 w-full h-1/2 bg-gradient-to-b from-lbd-pink/20 to-transparent"
         />
         <motion.div 
           initial={{ opacity: 0 }}
           animate={{ opacity: 0.1 }}
           transition={{ duration: 3, delay: 0.5, repeat: Infinity, repeatType: "reverse" }}
-          className="absolute -bottom-32 -left-32 w-96 h-96 rounded-full bg-purple-700/30 filter blur-[100px]"
+          className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-purple-700/20 to-transparent"
         />
       </div>
       
@@ -81,24 +89,35 @@ const Testimonials = () => {
         </motion.div>
         
         {/* Main testimonial display */}
-        <div className="max-w-5xl mx-auto">
+        <div className="max-w-5xl mx-auto relative">
           <motion.div 
             key={activeIndex}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.5 }}
-            className="mb-16"
+            className="relative"
           >
-            <Card className="border-none bg-gradient-to-br from-lbd-dark-accent/80 to-lbd-dark-accent shadow-xl backdrop-blur-sm">
-              <CardContent className="p-8 md:p-12">
-                <div className="flex flex-col items-center text-center">
-                  <Quote className="h-12 w-12 text-lbd-pink/30 mb-6" />
-                  <p className="text-xl md:text-2xl italic text-lbd-white mb-8 leading-relaxed">
-                    "{testimonials[activeIndex].quote}"
-                  </p>
-                  <div className="mt-4">
-                    <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-lbd-pink/20 mb-3">
+            <Card className="border-none bg-gradient-to-br from-lbd-dark-accent/80 to-lbd-dark-accent shadow-xl backdrop-blur-sm overflow-hidden">
+              <CardContent className="p-8 md:p-12 relative">
+                <div className="absolute top-0 left-0 h-2 w-full bg-gradient-to-r from-transparent via-lbd-pink/30 to-transparent"></div>
+                <div className="absolute bottom-0 left-0 h-2 w-full bg-gradient-to-r from-transparent via-lbd-pink/30 to-transparent"></div>
+                
+                <div className="grid md:grid-cols-6 gap-8 items-center">
+                  <div className="md:col-span-1 flex justify-center">
+                    <div className="w-20 h-20 rounded-full bg-gradient-to-br from-lbd-pink/20 to-purple-700/20 flex items-center justify-center">
+                      <Quote className="h-8 w-8 text-lbd-pink" />
+                    </div>
+                  </div>
+                  
+                  <div className="md:col-span-4 flex flex-col items-center text-center">
+                    <p className="text-xl md:text-2xl italic text-lbd-white mb-8 leading-relaxed">
+                      "{testimonials[activeIndex].quote}"
+                    </p>
+                  </div>
+                  
+                  <div className="md:col-span-1 flex flex-col items-center">
+                    <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-gradient-to-br from-lbd-pink/30 to-purple-700/20 mb-3">
                       <span className="text-lbd-pink font-bold text-lg">{testimonials[activeIndex].author.charAt(0)}</span>
                     </div>
                     <h4 className="font-bold text-xl">{testimonials[activeIndex].author}</h4>
@@ -109,8 +128,29 @@ const Testimonials = () => {
             </Card>
           </motion.div>
           
+          {/* Navigation buttons */}
+          <div className="absolute top-1/2 left-4 -translate-y-1/2 hidden md:block">
+            <button 
+              onClick={prevTestimonial} 
+              className="w-10 h-10 rounded-full bg-lbd-dark-accent/80 border border-white/10 flex items-center justify-center text-white/70 hover:text-lbd-pink hover:border-lbd-pink/30 transition-colors"
+              aria-label="Previous testimonial"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+          </div>
+          
+          <div className="absolute top-1/2 right-4 -translate-y-1/2 hidden md:block">
+            <button 
+              onClick={nextTestimonial} 
+              className="w-10 h-10 rounded-full bg-lbd-dark-accent/80 border border-white/10 flex items-center justify-center text-white/70 hover:text-lbd-pink hover:border-lbd-pink/30 transition-colors"
+              aria-label="Next testimonial"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </button>
+          </div>
+          
           {/* Testimonial navigation dots */}
-          <div className="flex justify-center gap-3">
+          <div className="flex justify-center gap-3 mt-8">
             {testimonials.map((_, index) => (
               <button
                 key={index}
