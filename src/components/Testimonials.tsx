@@ -1,6 +1,7 @@
 
 import { cn } from "@/lib/utils";
 import { TestimonialCard, TestimonialAuthor } from "@/components/ui/testimonial-card";
+import Pill from "@/components/ui/pill";
 
 interface TestimonialsProps {
   className?: string;
@@ -51,9 +52,9 @@ function Testimonials({ className }: TestimonialsProps) {
       <div className="absolute inset-0 bg-gradient-to-br from-lbd-pink/[0.05] via-transparent to-purple-500/[0.05] blur-3xl" />
       <div className="container-custom relative z-10">
         <div className="flex flex-col items-center text-center mb-16 max-w-3xl mx-auto">
-          <div className="inline-flex items-center justify-center mb-6 bg-lbd-pink/10 px-4 py-1 rounded-full border border-lbd-pink/20">
-            <span className="text-lbd-pink text-sm font-medium">Community Voices</span>
-          </div>
+          <Pill className="mb-6">
+            Community Voices
+          </Pill>
           
           <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-lbd-white to-lbd-white/80">
             {title}

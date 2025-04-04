@@ -1,6 +1,7 @@
 
 import { motion } from 'framer-motion';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import Pill from '@/components/ui/pill';
 
 interface FaqItem {
   question: string;
@@ -74,15 +75,17 @@ const FaqSupport = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <motion.div
-            initial={{ scale: 0.9, opacity: 0 }}
-            whileInView={{ scale: 1, opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="inline-flex items-center justify-center mb-6 bg-lbd-pink/10 px-4 py-1 rounded-full border border-lbd-pink/20"
+          <Pill
+            initial="hidden"
+            animate="visible"
+            variants={{
+              hidden: { scale: 0.9, opacity: 0 },
+              visible: { scale: 1, opacity: 1, transition: { duration: 0.5, delay: 0.2 } }
+            }}
+            className="mb-6"
           >
-            <span className="text-lbd-pink text-sm font-medium">Get Support</span>
-          </motion.div>
+            Get Support
+          </Pill>
           
           <h2 className="text-3xl md:text-4xl font-bold font-heading mb-4">
             FAQ & <span className="text-lbd-pink">Support</span>

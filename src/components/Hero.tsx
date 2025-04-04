@@ -5,6 +5,7 @@ import { Circle, ChevronRight, ArrowRight } from "lucide-react";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import Pill from "@/components/ui/pill";
 
 function ElegantShape({
     className,
@@ -139,18 +140,12 @@ const Hero = () => {
 
             <div className="relative z-10 container mx-auto px-4 md:px-6">
                 <div className="max-w-3xl mx-auto text-center space-y-6">
-                    <motion.div
+                    <Pill
                         custom={0}
                         variants={fadeUpVariants}
-                        initial="hidden"
-                        animate="visible"
-                        className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.03] border border-white/[0.08]"
                     >
-                        <Circle className="h-2 w-2 fill-lbd-pink" />
-                        <span className="text-sm text-white/60 tracking-wide">
-                            Design Collective
-                        </span>
-                    </motion.div>
+                        Design Collective
+                    </Pill>
 
                     <motion.div
                         custom={1}

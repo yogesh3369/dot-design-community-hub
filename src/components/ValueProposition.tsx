@@ -3,6 +3,7 @@
 
 import { motion } from 'framer-motion';
 import { CardSpotlight } from './ui/card-spotlight';
+import Pill from './ui/pill';
 
 const ValueProposition = () => {
   return (
@@ -49,9 +50,9 @@ const ValueProposition = () => {
             transition={{ duration: 0.5, delay: 0.2 }} 
             className="w-fit mx-auto mb-4"
           >
-            <div className="inline-flex items-center justify-center bg-gradient-to-r from-lbd-pink/20 to-purple-700/20 px-4 py-1 rounded-full border border-lbd-pink/30">
-              <span className="text-lbd-pink text-sm font-medium">Our Unique Value Proposition</span>
-            </div>
+            <Pill>
+              Our Unique Value Proposition
+            </Pill>
           </motion.div>
           
           <CardSpotlight className="backdrop-blur-sm bg-lbd-dark/50 border-white/10 hover:border-lbd-pink/30">

@@ -1,6 +1,7 @@
 
 import { motion } from 'framer-motion';
 import { Book, Calendar, MessageCircle, Video } from 'lucide-react';
+import Pill from './ui/pill';
 
 interface FeatureItem {
   icon: React.ReactNode;
@@ -84,15 +85,17 @@ const CommunityFeatures = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <motion.div
-            initial={{ scale: 0.9, opacity: 0 }}
-            whileInView={{ scale: 1, opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="inline-flex items-center justify-center mb-6 bg-lbd-pink/10 px-4 py-1 rounded-full border border-lbd-pink/20"
+          <Pill
+            initial="hidden"
+            animate="visible"
+            variants={{
+              hidden: { scale: 0.9, opacity: 0 },
+              visible: { scale: 1, opacity: 1, transition: { duration: 0.5, delay: 0.2 } }
+            }}
+            className="mb-6"
           >
-            <span className="text-lbd-pink text-sm font-medium">Join Our Community</span>
-          </motion.div>
+            Join Our Community
+          </Pill>
           
           <h2 className="text-3xl md:text-4xl font-bold font-heading mb-4">
             Community <span className="text-lbd-pink">Features & Benefits</span>

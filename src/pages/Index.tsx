@@ -4,7 +4,6 @@ import Hero from '@/components/Hero';
 import WhyJoinUs from '@/components/WhyJoinUs';
 import ValueProposition from '@/components/ValueProposition';
 import CommunityFeatures from '@/components/CommunityFeatures';
-import DayInLife from '@/components/DayInLife';
 import Testimonials from '@/components/Testimonials';
 import FaqSupport from '@/components/FaqSupport';
 import JoinNow from '@/components/JoinNow';
@@ -19,7 +18,6 @@ const Index = () => {
         <WhyJoinUs />
         <ValueProposition />
         <CommunityFeatures />
-        <DayInLife />
         <Testimonials />
         <FaqSupport />
         <JoinNow />

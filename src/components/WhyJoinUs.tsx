@@ -11,6 +11,7 @@ import {
 } from "framer-motion";
 import React, { useEffect, useRef, useState } from "react";
 import { Lightbulb, Award, Zap, Sparkles } from 'lucide-react';
+import Pill from "@/components/ui/pill";
 
 interface TimelineEntry {
   title: string;
@@ -246,15 +247,17 @@ const WhyJoinUs = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <motion.div
-            initial={{ scale: 0.9, opacity: 0 }}
-            whileInView={{ scale: 1, opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="inline-flex items-center justify-center mb-1 bg-lbd-pink/10 px-4 py-1 rounded-full border border-lbd-pink/20"
+          <Pill
+            initial="hidden"
+            animate="visible"
+            variants={{
+              hidden: { scale: 0.9, opacity: 0 },
+              visible: { scale: 1, opacity: 1, transition: { duration: 0.5, delay: 0.2 } }
+            }}
+            className="mb-1"
           >
-            <span className="text-lbd-pink text-sm font-medium">Find Your Perfect Fit</span>
-          </motion.div>
+            Find Your Perfect Fit
+          </Pill>
         </motion.div>
         
         <Timeline data={designerTypes} />
