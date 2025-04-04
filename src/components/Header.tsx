@@ -20,7 +20,7 @@ const Header = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollTop]);
-  return <header className={`w-full py-6 fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrollPosition > 10 ? 'bg-lbd-dark/90 backdrop-blur-lg shadow-lg' : 'bg-transparent'} ${isVisible ? 'translate-y-0' : '-translate-y-full'}`}>
+  return <header className="bg-gray-950">
       <div className="container-custom flex items-center justify-between">
         {/* Logo */}
         <div className="flex items-center">
