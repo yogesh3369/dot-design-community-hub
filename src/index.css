@@ -58,14 +58,15 @@
   }
 
   body {
-    @apply bg-lbd-dark text-lbd-white font-sans;
+    @apply bg-gradient-to-b from-lbd-dark to-[#0c0c14] text-lbd-white font-sans;
+    background-attachment: fixed;
   }
 }
 
 @layer components {
   .btn-primary {
     @apply bg-lbd-pink text-lbd-white font-semibold rounded-full px-6 py-3 
-    hover:bg-opacity-90 transition-all duration-300;
+    hover:bg-opacity-90 transition-all duration-300 shadow-lg shadow-lbd-pink/20;
   }
   
   .container-custom {
@@ -73,10 +74,37 @@
   }
   
   .glass-card {
-    @apply bg-lbd-dark-accent rounded-2xl border border-white/10 backdrop-blur-sm;
+    @apply bg-lbd-dark-accent/80 rounded-2xl border border-white/10 backdrop-blur-sm;
   }
   
   .accent-gradient {
     @apply bg-gradient-to-br from-lbd-dark-accent to-lbd-dark;
+  }
+  
+  .glow-effect {
+    @apply relative;
+  }
+  
+  .glow-effect::before {
+    @apply content-[''] absolute -inset-0.5 bg-gradient-to-r from-lbd-pink/30 to-purple-700/30 rounded-[inherit] opacity-0 transition-opacity duration-300 -z-10;
+  }
+  
+  .glow-effect:hover::before {
+    @apply opacity-100;
+  }
+  
+  .text-gradient {
+    @apply bg-gradient-to-r from-lbd-pink to-purple-500 inline-block text-transparent bg-clip-text;
+  }
+  
+  .bg-mesh-gradient {
+    background-image: 
+      radial-gradient(at 40% 20%, rgba(255, 75, 127, 0.1) 0px, transparent 50%),
+      radial-gradient(at 80% 50%, rgba(138, 75, 255, 0.1) 0px, transparent 50%),
+      radial-gradient(at 0% 100%, rgba(255, 75, 127, 0.05) 0px, transparent 50%);
+  }
+  
+  .hover-lift {
+    @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-xl;
   }
 }
