@@ -102,6 +102,10 @@ export default {
 						height: '0'
 					}
 				},
+				'marquee': {
+					'0%': { transform: 'translateX(0)' },
+					'100%': { transform: 'translateX(calc(-100% - var(--gap)))' }
+				},
 				'fade-in': {
 					'0%': {
 						opacity: '0',
@@ -183,13 +187,17 @@ export default {
 				'shimmer': 'shimmer 2s linear infinite',
 				'float': 'float 3s ease-in-out infinite',
 				'rotate-slow': 'rotate-slow 20s linear infinite',
-				'bounce-subtle': 'bounce-subtle 2s ease-in-out infinite'
+				'bounce-subtle': 'bounce-subtle 2s ease-in-out infinite',
+				'marquee': 'marquee var(--duration) linear infinite'
 			},
 			transitionProperty: {
 				'height': 'height',
 				'spacing': 'margin, padding',
 				'width': 'width',
 				'backdrop': 'backdrop-filter'
+			},
+			maxWidth: {
+				'container': '1280px'
 			},
 		}
 	},

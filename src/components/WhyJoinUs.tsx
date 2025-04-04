@@ -1,49 +1,68 @@
 
-import { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Lightbulb, Award, Zap } from 'lucide-react';
+"use client";
 
-type UserType = 'early' | 'mid' | 'senior';
+import {
+  useMotionValueEvent,
+  useScroll,
+  useTransform,
+  motion,
+  useInView,
+  AnimatePresence,
+} from "framer-motion";
+import React, { useEffect, useRef, useState } from "react";
+import { Lightbulb, Award, Zap, Sparkles } from 'lucide-react';
 
-interface PanelProps {
-  isActive: boolean;
+interface TimelineEntry {
   title: string;
+  type: string;
   challenge: string;
   solution: string;
   icon: React.ReactNode;
-  onClick: () => void;
 }
 
-const DesignerPanel = ({ isActive, title, challenge, solution, icon, onClick }: PanelProps) => {
+const DesignerPanel = ({ title, challenge, solution, icon }: Omit<TimelineEntry, 'type'>) => {
+  const panelRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(panelRef, { once: true, amount: 0.3 });
+  
   return (
     <motion.div 
-      className={`cursor-pointer rounded-2xl p-6 transition-all duration-500 ${
-        isActive ? 'bg-gradient-to-br from-lbd-pink/20 to-purple-700/20 border-lbd-pink' : 'bg-lbd-dark-accent/50 border-white/5'
-      } border backdrop-blur-sm`}
-      onClick={onClick}
-      whileHover={{ scale: isActive ? 1 : 1.02 }}
-      layout
+      ref={panelRef}
+      initial={{ opacity: 0, y: 20 }}
+      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+      transition={{ duration: 0.5, delay: 0.1 }}
+      className="glass-card border border-white/10 hover:border-lbd-pink/30 bg-lbd-dark-accent/50 hover:bg-gradient-to-br hover:from-lbd-pink/20 hover:to-purple-700/20 p-6 rounded-xl transition-all duration-300 backdrop-blur-sm"
     >
       <div className="flex items-start gap-4">
-        <div className={`w-12 h-12 rounded-full flex items-center justify-center transition-colors duration-300 ${
-          isActive ? 'bg-lbd-pink text-white' : 'bg-lbd-dark-accent text-lbd-pink'
-        }`}>
+        <motion.div 
+          initial={{ scale: 0.8, opacity: 0.5 }}
+          animate={isInView ? { scale: 1, opacity: 1 } : { scale: 0.8, opacity: 0.5 }}
+          transition={{ duration: 0.3, delay: 0.2 }}
+          className="w-12 h-12 rounded-full bg-lbd-dark-accent text-lbd-pink flex items-center justify-center shadow-lg shadow-lbd-pink/20"
+        >
           {icon}
-        </div>
+        </motion.div>
         
         <div className="flex-1">
-          <h3 className="text-xl md:text-2xl font-bold mb-2 font-heading">{title}</h3>
+          <h3 className="text-xl md:text-2xl font-bold mb-4 font-heading group flex items-center">
+            {title}
+            <motion.span 
+              initial={{ opacity: 0, x: -10 }}
+              animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -10 }}
+              transition={{ duration: 0.3, delay: 0.4 }}
+              className="ml-2 inline-flex text-lbd-pink/70"
+            >
+              <Sparkles size={18} />
+            </motion.span>
+          </h3>
           
-          <div className={`overflow-hidden transition-all duration-500 ${isActive ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
-            <div className="mb-4">
-              <h4 className="font-medium text-white/70 mb-1">Challenge:</h4>
-              <p className="text-white">{challenge}</p>
-            </div>
-            
-            <div>
-              <h4 className="font-medium text-white/70 mb-1">Solution:</h4>
-              <p className="text-white">{solution}</p>
-            </div>
+          <div className="mb-4">
+            <h4 className="font-medium text-white/70 mb-1">Challenge:</h4>
+            <p className="text-white">{challenge}</p>
+          </div>
+          
+          <div>
+            <h4 className="font-medium text-white/70 mb-1">Solution:</h4>
+            <p className="text-white">{solution}</p>
           </div>
         </div>
       </div>
@@ -51,35 +70,158 @@ const DesignerPanel = ({ isActive, title, challenge, solution, icon, onClick }: 
   );
 };
 
-const WhyJoinUs = () => {
-  const [activeType, setActiveType] = useState<UserType>('early');
+const Timeline = ({ data }: { data: TimelineEntry[] }) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [height, setHeight] = useState(0);
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (ref.current) {
+      const rect = ref.current.getBoundingClientRect();
+      setHeight(rect.height);
+    }
+  }, [ref]);
+
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start 10%", "end 50%"],
+  });
+
+  const heightTransform = useTransform(scrollYProgress, [0, 1], [0, height]);
+  const opacityTransform = useTransform(scrollYProgress, [0, 0.1], [0, 1]);
   
+  // Track scroll position to highlight the current section
+  useMotionValueEvent(scrollYProgress, "change", (latest) => {
+    const sectionCount = data.length;
+    const sectionSize = 1 / sectionCount;
+    const newIndex = Math.min(
+      sectionCount - 1,
+      Math.floor(latest / sectionSize)
+    );
+    setActiveIndex(newIndex >= 0 ? newIndex : null);
+  });
+
+  return (
+    <div
+      className="w-full bg-lbd-dark font-sans"
+      ref={containerRef}
+    >
+      <div className="max-w-7xl mx-auto py-6 px-4 md:px-8 lg:px-10">
+        <motion.h2 
+          initial={{ opacity: 0, y: -20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="text-3xl md:text-5xl font-bold font-heading mb-0 flex flex-col sm:flex-row sm:items-center gap-1"
+        >
+          Why <span className="text-lbd-pink inline-flex items-center">Join Us<span className="ml-2"><Sparkles size={24} className="text-lbd-pink" /></span></span>?
+        </motion.h2>
+        <motion.p 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="text-lbd-white/70 text-lg max-w-2xl"
+        >
+          No matter where you are in your career, we have resources tailored for your unique challenges.
+        </motion.p>
+      </div>
+
+      <div ref={ref} className="relative max-w-7xl mx-auto pb-20">
+        {data.map((item, index) => {
+          const isActive = activeIndex === index;
+          return (
+            <div
+              key={index}
+              className="flex justify-start pt-10 md:pt-40 md:gap-10"
+            >
+              <div className="sticky flex flex-col md:flex-row z-40 items-center top-40 self-start max-w-xs lg:max-w-sm md:w-full">
+                <motion.div 
+                  initial={{ scale: 0.8, opacity: 0.5 }}
+                  animate={isActive ? { scale: 1.1, opacity: 1 } : { scale: 1, opacity: 0.7 }}
+                  transition={{ duration: 0.3 }}
+                  className={`h-10 absolute left-3 md:left-3 w-10 rounded-full ${isActive ? 'bg-lbd-pink/20' : 'bg-lbd-dark-accent'} flex items-center justify-center transition-colors duration-300`}
+                >
+                  <motion.div 
+                    animate={isActive ? { scale: 1.2 } : { scale: 1 }}
+                    transition={{ duration: 0.3, type: "spring" }}
+                    className={`h-4 w-4 rounded-full ${isActive ? 'bg-lbd-pink' : 'bg-lbd-pink/50'} border ${isActive ? 'border-lbd-pink' : 'border-lbd-pink/30'} p-2`} 
+                  />
+                </motion.div>
+                <motion.h3 
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: isActive ? 1 : 0.6, x: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className={`hidden md:block text-xl md:pl-20 md:text-3xl font-bold ${isActive ? 'text-white' : 'text-white/60'} font-heading transition-colors duration-300`}
+                >
+                  {item.title}
+                </motion.h3>
+              </div>
+
+              <div className="relative pl-20 pr-4 md:pl-4 w-full">
+                <h3 className="md:hidden block text-2xl mb-4 text-left font-bold text-white font-heading">
+                  {item.title}
+                </h3>
+                <DesignerPanel
+                  title={item.title}
+                  challenge={item.challenge}
+                  solution={item.solution}
+                  icon={item.icon}
+                />
+              </div>
+            </div>
+          );
+        })}
+        <div
+          style={{
+            height: height + "px",
+          }}
+          className="absolute md:left-8 left-8 top-0 overflow-hidden w-[2px] bg-[linear-gradient(to_bottom,var(--tw-gradient-stops))] from-transparent from-[0%] via-white/20 dark:via-white/10 to-transparent to-[99%]  [mask-image:linear-gradient(to_bottom,transparent_0%,black_10%,black_90%,transparent_100%)]"
+        >
+          <motion.div
+            style={{
+              height: heightTransform,
+              opacity: opacityTransform,
+            }}
+            className="absolute inset-x-0 top-0 w-[2px] bg-gradient-to-t from-lbd-pink via-purple-500 to-transparent from-[0%] via-[10%] rounded-full"
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const WhyJoinUs = () => {
   const designerTypes = [
     {
-      type: 'early' as UserType,
+      type: 'early',
       title: 'Early-Career Designers',
       challenge: 'Feeling overwhelmed by endless AI tools?',
       solution: 'Structured learning paths, unique methodologies (MCPs, Vibe Coding), and mentorship to rapidly build your AI skills and portfolio.',
-      icon: <Lightbulb size={24} />
+      icon: <Lightbulb size={24} />,
+
     },
     {
-      type: 'mid' as UserType,
+      type: 'mid',
       title: 'Mid-Career Designers',
       challenge: 'Struggling to integrate AI effectively into your workflow?',
       solution: 'Practical knowledge platforms, peer collaboration, and real-time problem-solving to enhance your existing skills quickly.',
-      icon: <Zap size={24} />
+      icon: <Zap size={24} />,
+
     },
     {
-      type: 'senior' as UserType,
+      type: 'senior',
       title: 'Senior Designers & Leaders',
       challenge: 'Unsure how to strategically lead AI adoption in your team?',
       solution: 'Curated industry insights, strategic networking, and expert guidance to lead confidently without becoming overwhelmed by technical details.',
-      icon: <Award size={24} />
+      icon: <Award size={24} />,
+
     }
   ];
 
   return (
-    <section id="why-join-us" className="py-24 relative overflow-hidden">
+    <section id="why-join-us" className="relative overflow-hidden">
       {/* Background elements */}
       <div className="absolute inset-0 bg-lbd-dark z-0">
         <motion.div 
@@ -96,9 +238,9 @@ const WhyJoinUs = () => {
         ></motion.div>
       </div>
       
-      <div className="container-custom relative z-10">
+      <div className="relative z-10">
         <motion.div 
-          className="text-center max-w-2xl mx-auto mb-16"
+          className="text-center max-w-2xl mx-auto"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -109,61 +251,65 @@ const WhyJoinUs = () => {
             whileInView={{ scale: 1, opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="inline-flex items-center justify-center mb-6 bg-lbd-pink/10 px-4 py-1 rounded-full border border-lbd-pink/20"
+            className="inline-flex items-center justify-center mb-1 bg-lbd-pink/10 px-4 py-1 rounded-full border border-lbd-pink/20"
           >
             <span className="text-lbd-pink text-sm font-medium">Find Your Perfect Fit</span>
           </motion.div>
-          
-          <h2 className="text-3xl md:text-4xl font-bold font-heading mb-4">
-            Why <span className="text-lbd-pink">Join Us</span>?
-          </h2>
-          <p className="text-lbd-white/70 text-lg">
-            No matter where you are in your career, we have resources tailored for your unique challenges.
-          </p>
         </motion.div>
         
-        <motion.div 
-          className="grid gap-6"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-        >
-          {designerTypes.map((designer) => (
-            <DesignerPanel
-              key={designer.type}
-              isActive={activeType === designer.type}
-              title={designer.title}
-              challenge={designer.challenge}
-              solution={designer.solution}
-              icon={designer.icon}
-              onClick={() => setActiveType(designer.type)}
-            />
-          ))}
-        </motion.div>
+        <Timeline data={designerTypes} />
         
         {/* "Aha" effect - sparkling buttons for different activities */}
-        <motion.div 
-          className="mt-16 grid grid-cols-2 md:grid-cols-3 gap-4"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7, delay: 0.5 }}
-        >
-          {['Workshops', 'Resources', 'Mentorship', 'Networking', 'Discussions', 'Insights'].map((activity, index) => (
-            <motion.div 
-              key={activity}
-              className="glass-card border border-white/10 hover:border-lbd-pink/30 hover:bg-lbd-pink/5 p-4 rounded-xl flex items-center justify-center text-center"
-              whileHover={{ 
-                scale: 1.05, 
-                boxShadow: '0 0 20px rgba(255, 75, 127, 0.2)'
-              }}
-              transition={{ delay: index * 0.1 }}
-            >
-              <span className="text-white text-sm md:text-base font-medium">{activity}</span>
-            </motion.div>
-          ))}
-        </motion.div>
+        <div className="container-custom">
+          <motion.div 
+            className="mt-8 mb-16"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7 }}
+          >
+            <h3 className="text-2xl font-bold font-heading mb-6 text-center">
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-lbd-pink to-purple-500">Explore Our Community</span>
+            </h3>
+            
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+              {[
+                { name: 'Workshops', icon: '🔧' },
+                { name: 'Resources', icon: '📚' },
+                { name: 'Mentorship', icon: '🧠' },
+                { name: 'Networking', icon: '🌐' },
+                { name: 'Discussions', icon: '💬' },
+                { name: 'Insights', icon: '💡' }
+              ].map((activity, index) => (
+                <motion.div 
+                  key={activity.name}
+                  className="glass-card border border-white/10 hover:border-lbd-pink/30 hover:bg-lbd-pink/5 p-4 rounded-xl flex flex-col items-center justify-center text-center gap-2 group"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 }}
+                  whileHover={{ 
+                    scale: 1.05, 
+                    boxShadow: '0 0 20px rgba(255, 75, 127, 0.2)'
+                  }}
+                >
+                  <span className="text-3xl group-hover:scale-110 transition-transform duration-300">{activity.icon}</span>
+                  <span className="text-white text-sm md:text-base font-medium">{activity.name}</span>
+                </motion.div>
+              ))}
+            </div>
+            
+            <div className="mt-8 text-center">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="bg-gradient-to-r from-lbd-pink to-purple-600 px-6 py-3 rounded-full text-white font-medium shadow-lg shadow-lbd-pink/20 hover:shadow-lbd-pink/30 transition-shadow duration-300"
+              >
+                Join Our Community
+              </motion.button>
+            </div>
+          </motion.div>
+        </div>
       </div>
     </section>
   );
