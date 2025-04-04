@@ -1,14 +1,28 @@
+
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Menu, X } from 'lucide-react';
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+  navigationMenuTriggerStyle,
+} from "@/components/ui/navigation-menu";
+import { cn } from "@/lib/utils";
+
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrollPosition, setScrollPosition] = useState(0);
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollTop, setLastScrollTop] = useState(0);
+  
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
+  
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollPos = window.scrollY;
@@ -20,7 +34,13 @@ const Header = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollTop]);
-  return <header className={`w-full py-6 fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrollPosition > 10 ? 'bg-lbd-dark/90 backdrop-blur-lg shadow-lg' : 'bg-transparent'} ${isVisible ? 'translate-y-0' : '-translate-y-full'}`}>
+
+  return (
+    <header 
+      className={`w-full py-6 fixed top-0 left-0 right-0 z-50 transition-all duration-300 
+      ${scrollPosition > 10 ? 'bg-lbd-dark/90 backdrop-blur-lg shadow-lg border-b border-white/5' : 'bg-transparent'} 
+      ${isVisible ? 'translate-y-0' : '-translate-y-full'}`}
+    >
       <div className="container-custom flex items-center justify-between">
         {/* Logo */}
         <div className="flex items-center">
@@ -32,14 +52,60 @@ const Header = () => {
         </div>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center space-x-8">
+        <nav className="hidden md:flex items-center space-x-6">
+          <NavigationMenu>
+            <NavigationMenuList>
+              <NavigationMenuItem>
+                <NavigationMenuLink 
+                  href="#features" 
+                  className={cn(
+                    "text-lbd-white hover:text-lbd-pink transition-colors duration-200",
+                    "px-4 py-2 text-sm font-medium"
+                  )}
+                >
+                  Features
+                </NavigationMenuLink>
+              </NavigationMenuItem>
+              <NavigationMenuItem>
+                <NavigationMenuLink 
+                  href="#resources" 
+                  className={cn(
+                    "text-lbd-white hover:text-lbd-pink transition-colors duration-200",
+                    "px-4 py-2 text-sm font-medium"
+                  )}
+                >
+                  Resources
+                </NavigationMenuLink>
+              </NavigationMenuItem>
+              <NavigationMenuItem>
+                <NavigationMenuLink 
+                  href="#community" 
+                  className={cn(
+                    "text-lbd-white hover:text-lbd-pink transition-colors duration-200",
+                    "px-4 py-2 text-sm font-medium"
+                  )}
+                >
+                  Community
+                </NavigationMenuLink>
+              </NavigationMenuItem>
+              <NavigationMenuItem>
+                <NavigationMenuLink 
+                  href="#blog" 
+                  className={cn(
+                    "text-lbd-white hover:text-lbd-pink transition-colors duration-200",
+                    "px-4 py-2 text-sm font-medium"
+                  )}
+                >
+                  Blog
+                </NavigationMenuLink>
+              </NavigationMenuItem>
+            </NavigationMenuList>
+          </NavigationMenu>
           
-          
-          
-          
-          <Button className="btn-primary relative overflow-hidden group">
-            <span className="relative z-10">Join Our Community</span>
-            <span className="absolute inset-0 bg-white/20 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></span>
+          <Button 
+            className="bg-gradient-to-r from-lbd-pink to-lbd-pink/80 text-white font-medium rounded-full transition-all duration-300 hover:shadow-lg hover:shadow-lbd-pink/25 px-6"
+          >
+            Join Our Community
           </Button>
         </nav>
 
@@ -50,7 +116,8 @@ const Header = () => {
       </div>
 
       {/* Mobile Navigation */}
-      {isMenuOpen && <div className="md:hidden absolute top-20 left-0 right-0 bg-lbd-dark-accent/95 backdrop-blur-lg z-50 animate-fade-in shadow-2xl border-t border-lbd-white/10">
+      {isMenuOpen && (
+        <div className="md:hidden absolute top-20 left-0 right-0 bg-lbd-dark-accent/95 backdrop-blur-lg z-50 animate-fade-in shadow-2xl border-t border-lbd-white/10">
           <div className="container-custom py-6 flex flex-col space-y-4">
             <a href="#features" className="text-lbd-white hover:text-lbd-pink py-2 transition-colors" onClick={toggleMenu}>
               Features
@@ -64,9 +131,14 @@ const Header = () => {
             <a href="#blog" className="text-lbd-white hover:text-lbd-pink py-2 transition-colors" onClick={toggleMenu}>
               Blog
             </a>
-            <Button className="btn-primary w-full">Join Our Community</Button>
+            <Button className="bg-gradient-to-r from-lbd-pink to-lbd-pink/80 text-white font-medium rounded-full w-full">
+              Join Our Community
+            </Button>
           </div>
-        </div>}
-    </header>;
+        </div>
+      )}
+    </header>
+  );
 };
+
 export default Header;
