@@ -71,7 +71,7 @@
 
 @layer components {
   .btn-primary {
-    @apply relative overflow-hidden bg-gradient-to-r from-lbd-pink via-lbd-purple to-lbd-cyan text-lbd-white font-semibold rounded-full px-6 py-3 
+    @apply relative overflow-hidden bg-gradient-to-r from-lbd-pink via-purple-600 to-lbd-pink text-lbd-white font-semibold rounded-full px-6 py-3 
     hover:shadow-[0_0_20px_rgba(255,75,127,0.5)] transition-all duration-300 shadow-lg shadow-lbd-pink/20 bg-size-200 bg-pos-0 hover:bg-pos-100;
   }
   
@@ -93,20 +93,15 @@
   }
   
   .glow-effect::before {
-    @apply content-[''] absolute -inset-0.5 bg-gradient-to-r from-lbd-pink/30 to-lbd-purple/30 rounded-[inherit] opacity-0 transition-opacity duration-300 -z-10;
+    @apply content-[''] absolute -inset-0.5 bg-gradient-to-r from-lbd-pink/30 to-purple-700/30 rounded-[inherit] opacity-0 transition-opacity duration-300 -z-10;
   }
   
   .glow-effect:hover::before {
     @apply opacity-100;
   }
   
-  /* Enhanced text gradient effects */
   .text-gradient {
-    @apply bg-gradient-to-r from-lbd-pink to-lbd-purple inline-block text-transparent bg-clip-text;
-  }
-
-  .text-gradient-animated {
-    @apply bg-gradient-to-r from-lbd-pink via-lbd-cyan to-lbd-purple bg-clip-text text-transparent bg-size-200 animate-shimmer;
+    @apply bg-gradient-to-r from-lbd-pink to-purple-500 inline-block text-transparent bg-clip-text;
   }
   
   .bg-mesh-gradient {
@@ -118,27 +113,6 @@
   
   .hover-lift {
     @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-lbd-pink/10;
-  }
-  
-  /* Neon effects */
-  .neon-text {
-    @apply text-lbd-pink animate-neon-pulse;
-  }
-  
-  .neon-text-cyan {
-    text-shadow: 0 0 10px rgba(54, 219, 255, 0.8), 0 0 20px rgba(54, 219, 255, 0.5), 0 0 30px rgba(54, 219, 255, 0.3);
-  }
-  
-  .neon-text-purple {
-    text-shadow: 0 0 10px rgba(138, 94, 255, 0.8), 0 0 20px rgba(138, 94, 255, 0.5), 0 0 30px rgba(138, 94, 255, 0.3);
-  }
-  
-  .neon-border {
-    @apply border border-lbd-pink shadow-[0_0_10px_rgba(255,75,127,0.7),0_0_20px_rgba(255,75,127,0.4),inset_0_0_8px_rgba(255,75,127,0.4)];
-  }
-  
-  .neon-glow {
-    filter: drop-shadow(0 0 10px rgba(255, 75, 127, 0.8)) drop-shadow(0 0 20px rgba(255, 75, 127, 0.4));
   }
   
   /* Background pattern utilities */
@@ -156,6 +130,14 @@
   
   .zigzag-pattern {
     background-image: url("data:image/svg+xml,%3Csvg width='40' height='12' viewBox='0 0 40 12' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 6.172L6.172 0h5.656L0 11.828V6.172zm40 5.656L28.172 0h5.656L40 6.172v5.656zM6.172 12l12-12h3.656l12 12h-5.656L20 3.828 11.828 12H6.172zm12 0L20 10.172 21.828 12h-3.656z' fill='%23ff4b7f' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+  }
+  
+  .grid-pattern {
+    background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%239C92AC' fill-opacity='0.05' fill-rule='evenodd'%3E%3Cpath d='M0 40L40 0H20L0 20M40 40V20L20 40'/%3E%3C/g%3E%3C/svg%3E");
+  }
+  
+  .bubbles-pattern {
+    background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle stroke='%23ff4b7f' stroke-width='0.5' stroke-opacity='0.05' fill='none' cx='50' cy='50' r='40'/%3E%3Ccircle stroke='%239C92AC' stroke-width='0.5' stroke-opacity='0.05' fill='none' cx='50' cy='50' r='35'/%3E%3Ccircle stroke='%238a5eff' stroke-width='0.5' stroke-opacity='0.05' fill='none' cx='50' cy='50' r='30'/%3E%3Ccircle stroke='%23ff4b7f' stroke-width='0.5' stroke-opacity='0.05' fill='none' cx='50' cy='50' r='25'/%3E%3C/svg%3E");
   }
   
   /* New style utilities */
@@ -216,87 +198,48 @@
     animation: shine 1.5s;
   }
   
-  /* Hologram effect */
-  .hologram {
-    position: relative;
-    overflow: hidden;
-  }
-  
-  .hologram::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(
-      45deg,
-      rgba(255, 75, 127, 0) 0%,
-      rgba(255, 75, 127, 0.1) 50%,
-      rgba(255, 75, 127, 0) 100%
-    );
-    z-index: 1;
-    animation: hologram-shine 3s ease-in-out infinite;
-  }
-  
-  @keyframes hologram-shine {
+  @keyframes shine {
     0% {
       opacity: 0;
-      transform: translateX(-100%) translateY(-100%) rotate(45deg);
+      transform: translateX(-100%) rotate(45deg);
     }
     30% {
-      opacity: 1;
-    }
-    70% {
-      opacity: 1;
+      opacity: 0.7;
     }
     100% {
       opacity: 0;
-      transform: translateX(100%) translateY(100%) rotate(45deg);
+      transform: translateX(100%) rotate(45deg);
     }
   }
   
-  /* Glass morphism effects */
-  .glass {
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.36);
+  .text-outline {
+    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.2);
   }
   
-  .glass-dark {
-    background: rgba(10, 10, 20, 0.7);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.36);
+  .text-outline-pink {
+    -webkit-text-stroke: 1px rgba(255, 75, 127, 0.4);
   }
   
-  /* Cyber pattern */
-  .cyber-pattern {
-    background-size: 40px 40px;
-    background-image: 
-      linear-gradient(rgba(255, 75, 127, 0.05) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255, 75, 127, 0.05) 1px, transparent 1px);
+  .noise-bg {
+    position: relative;
+  }
+  
+  .noise-bg::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 0.1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    opacity: 0.05;
+    z-index: -1;
+    pointer-events: none;
   }
 }
+
 
 /* Additional keyframes */
-@keyframes shine {
-  0% {
-    opacity: 0;
-    transform: translateX(-100%) rotate(45deg);
-  }
-  30% {
-    opacity: 0.7;
-  }
-  100% {
-    opacity: 0;
-    transform: translateX(100%) rotate(45deg);
-  }
-}
-
 @keyframes float {
   0% {
     transform: translateY(0px);
@@ -329,13 +272,6 @@
   animation: pulse-glow 3s ease-in-out infinite;
 }
 
-/* Neon border effect */
-.neon-border {
-  position: relative;
-  border: 2px solid rgba(255, 75, 127, 0.7);
-  box-shadow: 0 0 5px rgba(255, 75, 127, 0.7), 0 0 10px rgba(255, 75, 127, 0.5), inset 0 0 5px rgba(255, 75, 127, 0.2);
-}
-
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
@@ -347,12 +283,12 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(to bottom, rgba(255, 75, 127, 0.7), rgba(138, 94, 255, 0.7));
+  background: rgba(255, 75, 127, 0.3);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(to bottom, rgba(255, 75, 127, 0.9), rgba(138, 94, 255, 0.9));
+  background: rgba(255, 75, 127, 0.5);
 }
 
 /* Custom animations for page sections */
