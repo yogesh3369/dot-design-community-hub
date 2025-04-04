@@ -78,9 +78,11 @@ const Features = () => {
   ];
 
   return (
-    <section id="features" className="py-24 relative overflow-hidden bg-mesh-gradient">
+    <section id="features" className="py-24 relative overflow-hidden grid-pattern">
       {/* Background elements */}
       <div className="absolute inset-0 z-0">
+        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-lbd-dark/95 to-lbd-dark opacity-95"></div>
+        
         <motion.div 
           animate={{ 
             scale: [1, 1.2, 1],
@@ -107,6 +109,19 @@ const Features = () => {
           }} 
           className="absolute bottom-0 left-0 w-[500px] h-[500px] rounded-full bg-purple-700 filter blur-[150px] opacity-10"
         />
+        
+        {/* Decorative SVG shapes */}
+        <div className="absolute top-1/4 right-1/4 w-64 h-64 opacity-5">
+          <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+            <path fill="#FF4B7F" d="M39.9,-65.7C52.3,-60.2,63.4,-50.6,71.3,-38.2C79.2,-25.9,83.9,-10.8,81.5,3C79,16.8,69.5,29.4,59.1,39.8C48.7,50.2,37.4,58.4,25,63.8C12.6,69.2,-1,71.8,-13.6,68.7C-26.2,65.7,-37.7,57,-48.2,47C-58.7,37,-68.2,25.5,-73.3,11.8C-78.5,-1.9,-79.4,-17.9,-74.2,-31.9C-69,-45.9,-57.7,-58.1,-44.2,-63.3C-30.7,-68.6,-15.3,-67.1,-0.5,-66.2C14.3,-65.4,28.6,-65.4,40.1,-60.8Q31.2,-48.5,39.9,-65.7Z" transform="translate(100 100)" />
+          </svg>
+        </div>
+        
+        <div className="absolute bottom-1/4 left-1/4 w-80 h-80 opacity-5">
+          <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+            <path fill="#8A5EFF" d="M44.9,-76.5C59.8,-69.7,74.8,-60.4,83.1,-46.6C91.3,-32.8,93,-14.6,89.5,1.9C86.1,18.5,77.6,33.2,67.5,46.8C57.4,60.4,45.6,72.8,31.1,79.5C16.6,86.1,-0.7,86.9,-17.3,82.5C-33.9,78.1,-49.8,68.5,-62.3,55.8C-74.8,43.1,-83.8,27.3,-87.9,10C-92,-)7.4,-91.2,-26.2,-82.1,-39.4C-73,-52.7,-55.7,-60.3,-39.6,-66.6C-23.6,-72.9,-8.8,-77.8,4.4,-84.7C17.6,-91.5,30,-83.3,44.9,-76.5Z" transform="translate(100 100)" />
+          </svg>
+        </div>
       </div>
       
       <div className="container-custom relative z-10">

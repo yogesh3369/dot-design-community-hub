@@ -5,15 +5,29 @@ import { ArrowUp } from 'lucide-react';
 
 const JoinNow = () => {
   return (
-    <section id="join-now" className="py-24 relative overflow-hidden">
+    <section id="join-now" className="py-24 relative overflow-hidden circuit-pattern">
       {/* Background elements */}
-      <div className="absolute inset-0 bg-gradient-to-b from-lbd-dark to-black z-0">
+      <div className="absolute inset-0 bg-gradient-to-b from-lbd-dark/95 to-black z-0">
         <motion.div 
           initial={{ opacity: 0 }}
-          animate={{ opacity: 0.1 }}
+          animate={{ opacity: 0.15 }}
           transition={{ duration: 3, repeat: Infinity, repeatType: "reverse" }}
           className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-lbd-pink rounded-full filter blur-[200px]"
-        ></motion.div>
+        />
+        
+        {/* Decorative elements */}
+        <div className="absolute top-0 left-0 w-full h-full overflow-hidden">
+          <motion.svg 
+            className="absolute bottom-0 left-0 w-full opacity-10"
+            viewBox="0 0 1440 320"
+            xmlns="http://www.w3.org/2000/svg"
+            initial={{ y: 20, opacity: 0.05 }}
+            animate={{ y: 0, opacity: 0.1 }}
+            transition={{ duration: 10, repeat: Infinity, repeatType: "reverse" }}
+          >
+            <path fill="#FF4B7F" fillOpacity="0.5" d="M0,224L48,213.3C96,203,192,181,288,181.3C384,181,480,203,576,202.7C672,203,768,181,864,170.7C960,160,1056,160,1152,170.7C1248,181,1344,203,1392,213.3L1440,224L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z" />
+          </motion.svg>
+        </div>
       </div>
       
       <div className="container-custom relative z-10">

@@ -61,9 +61,12 @@ const Testimonials = () => {
   };
 
   return (
-    <section id="testimonials" className="py-24 bg-mesh-gradient relative overflow-hidden">
-      {/* Animated particles */}
+    <section id="testimonials" className="py-24 relative overflow-hidden zigzag-pattern">
+      {/* Background elements */}
       <div className="absolute inset-0 z-0 overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-lbd-dark/90 to-lbd-dark opacity-95"></div>
+        
+        {/* Animated particles */}
         {[...Array(20)].map((_, i) => (
           <motion.div
             key={i}
@@ -86,6 +89,10 @@ const Testimonials = () => {
             }}
           />
         ))}
+        
+        {/* Decorative circles */}
+        <div className="absolute top-1/4 left-1/4 w-64 h-64 rounded-full bg-lbd-pink/5 mix-blend-overlay filter blur-xl"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 rounded-full bg-purple-600/5 mix-blend-overlay filter blur-xl"></div>
       </div>
       
       <div className="container-custom relative z-10">
@@ -127,9 +134,23 @@ const Testimonials = () => {
             >
               <Card className="border-none bg-gradient-to-br from-[#1D1D2B]/90 to-[#15151f]/90 shadow-2xl backdrop-blur-md overflow-hidden hover-lift">
                 <div className="p-8 md:p-12 relative">
+                  {/* Decorative top gradient line */}
                   <div className="absolute top-0 left-0 h-1 w-full bg-gradient-to-r from-transparent via-lbd-pink to-transparent"></div>
                   
-                  <div className="grid md:grid-cols-6 gap-8 items-center">
+                  {/* Decorative elements */}
+                  <div className="absolute top-0 right-0 w-32 h-32 opacity-20">
+                    <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                      <path fill="#FF4B7F" d="M47.5,-57.2C60.2,-45.7,68.4,-28.6,71.5,-10.1C74.5,8.4,72.5,28.2,62.3,41.6C52.2,55,34,62,15.2,68.8C-3.6,75.5,-23,82,-39.9,76.4C-56.8,70.8,-71.2,53.1,-77.1,33.3C-83,13.5,-80.5,-8.4,-71.4,-26.4C-62.3,-44.4,-46.6,-58.5,-30.4,-67.8C-14.2,-77.1,2.6,-81.8,17.3,-77.7C32,-73.7,44.7,-61,47.5,-57.2Z" transform="translate(100 100)" />
+                    </svg>
+                  </div>
+                  
+                  <div className="absolute bottom-0 left-0 w-40 h-40 opacity-10">
+                    <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                      <path fill="#8A5EFF" d="M44.3,-58.5C54.9,-48.5,59.1,-31.4,64.1,-13.8C69.1,3.9,74.9,22.1,70.2,38.2C65.5,54.2,50.3,68.1,32.5,75.2C14.7,82.3,-5.8,82.7,-23.9,75.8C-41.9,68.9,-57.5,54.9,-67.1,37.9C-76.7,20.9,-80.3,0.9,-75.2,-16.1C-70.1,-33.2,-56.3,-47.3,-41.5,-56.4C-26.7,-65.5,-10.9,-69.7,3.8,-74.3C18.5,-78.9,36.9,-84,44.3,-58.5Z" transform="translate(100 100)" />
+                    </svg>
+                  </div>
+                  
+                  <div className="grid md:grid-cols-6 gap-8 items-center relative z-10">
                     <div className="md:col-span-1 flex justify-center">
                       <div className="w-20 h-20 rounded-full bg-gradient-to-br from-lbd-pink/30 to-purple-700/30 flex items-center justify-center shadow-inner shadow-lbd-pink/20">
                         <Quote className="h-8 w-8 text-lbd-pink" />

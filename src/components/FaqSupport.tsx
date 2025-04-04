@@ -21,21 +21,49 @@ const FaqSupport = () => {
   ];
 
   return (
-    <section id="faq-support" className="py-24 relative overflow-hidden">
+    <section id="faq-support" className="py-24 relative overflow-hidden bubbles-pattern">
       {/* Background elements */}
-      <div className="absolute inset-0 bg-lbd-dark z-0">
+      <div className="absolute inset-0 bg-lbd-dark/95 z-0">
         <motion.div 
           initial={{ opacity: 0 }}
           animate={{ opacity: 0.05 }}
           transition={{ duration: 2.5, repeat: Infinity, repeatType: "reverse" }}
           className="absolute top-1/3 right-1/4 w-96 h-96 bg-purple-600 rounded-full filter blur-[150px]"
-        ></motion.div>
+        />
         <motion.div 
           initial={{ opacity: 0 }}
           animate={{ opacity: 0.05 }}
           transition={{ duration: 3.5, delay: 0.5, repeat: Infinity, repeatType: "reverse" }}
           className="absolute bottom-1/3 left-1/4 w-96 h-96 bg-lbd-pink rounded-full filter blur-[150px]"
-        ></motion.div>
+        />
+        
+        {/* Decorative circles */}
+        <div className="absolute inset-0 overflow-hidden">
+          {[...Array(8)].map((_, i) => (
+            <motion.div
+              key={i}
+              className="absolute rounded-full border border-white/5"
+              style={{
+                width: `${(i + 2) * 100}px`,
+                height: `${(i + 2) * 100}px`,
+                left: '50%',
+                top: '50%',
+                marginLeft: `-${((i + 2) * 100) / 2}px`,
+                marginTop: `-${((i + 2) * 100) / 2}px`,
+              }}
+              animate={{
+                scale: [1, 1.05, 1],
+                opacity: [0.1, 0.15, 0.1],
+              }}
+              transition={{
+                duration: 6 + i,
+                repeat: Infinity,
+                repeatType: "reverse",
+                delay: i * 0.5,
+              }}
+            />
+          ))}
+        </div>
       </div>
       
       <div className="container-custom relative z-10">
