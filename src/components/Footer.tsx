@@ -1,77 +1,60 @@
+import { Icons } from "@/components/ui/icons"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Facebook, Instagram, Linkedin, Twitter } from "lucide-react"
 
-import { Github, Twitter, Instagram, Linkedin } from "lucide-react";
-
-const Footer = () => {
+function Footer() {
   return (
-    <footer className="bg-lbd-dark-accent py-16">
-      <div className="container-custom">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
-          {/* Brand */}
-          <div className="col-span-1 md:col-span-1">
-            <h2 className="text-xl font-bold font-heading mb-4">
-              Little <span className="text-lbd-pink">Big</span> Dots
-            </h2>
-            <p className="text-lbd-white/70 mb-6">
-              A supportive community helping designers master AI with hands-on methodologies.
-            </p>
-            <div className="flex space-x-4">
-              <a href="#" className="text-lbd-white/70 hover:text-lbd-pink transition-colors">
-                <Twitter size={20} />
-              </a>
-              <a href="#" className="text-lbd-white/70 hover:text-lbd-pink transition-colors">
-                <Instagram size={20} />
-              </a>
-              <a href="#" className="text-lbd-white/70 hover:text-lbd-pink transition-colors">
-                <Linkedin size={20} />
-              </a>
-              <a href="#" className="text-lbd-white/70 hover:text-lbd-pink transition-colors">
-                <Github size={20} />
-              </a>
+    <footer className="bg-lbd-dark pt-16 pb-16">
+      <div className="relative">
+        {/* Background gradients */}
+        <div className="absolute inset-0 bg-gradient-to-br from-lbd-pink/[0.05] via-transparent to-purple-500/[0.05] blur-3xl" />
+
+        <div className="container-custom px-4 md:px-6">
+          <div className="flex flex-col items-center">
+            <div className="mb-8 rounded-full bg-lbd-pink/10 p-8">
+              <Icons.logo className="text-lbd-pink w-6" />
+            </div>
+            <div className="mb-8 flex space-x-4">
+              <Button variant="outline" size="icon" className="rounded-full hover:bg-lbd-pink/10 hover:text-lbd-pink">
+                <Facebook className="h-4 w-4" />
+                <span className="sr-only">Facebook</span>
+              </Button>
+              <Button variant="outline" size="icon" className="rounded-full hover:bg-lbd-pink/10 hover:text-lbd-pink">
+                <Twitter className="h-4 w-4" />
+                <span className="sr-only">Twitter</span>
+              </Button>
+              <Button variant="outline" size="icon" className="rounded-full hover:bg-lbd-pink/10 hover:text-lbd-pink">
+                <Instagram className="h-4 w-4" />
+                <span className="sr-only">Instagram</span>
+              </Button>
+              <Button variant="outline" size="icon" className="rounded-full hover:bg-lbd-pink/10 hover:text-lbd-pink">
+                <Linkedin className="h-4 w-4" />
+                <span className="sr-only">LinkedIn</span>
+              </Button>
+            </div>
+            <div className="mb-8 w-full max-w-md">
+              <form className="flex space-x-2">
+                <div className="flex-grow">
+                  <Label htmlFor="email" className="sr-only">Email</Label>
+                  <Input id="email" placeholder="Enter your email" type="email" className="rounded-full bg-lbd-dark/50" />
+                </div>
+                <Button type="submit" className="rounded-full bg-lbd-pink text-lbd-dark hover:bg-lbd-pink/90">
+                  Subscribe
+                </Button>
+              </form>
+            </div>
+            <div className="text-center">
+              <p className="text-sm text-white/60">
+                &copy; {new Date().getFullYear()} Little Big Dots. All rights reserved.
+              </p>
             </div>
           </div>
-
-          {/* Quick Links */}
-          <div>
-            <h3 className="text-lbd-white font-bold mb-4">Quick Links</h3>
-            <ul className="space-y-3">
-              <li><a href="#" className="text-lbd-white/70 hover:text-lbd-pink transition-colors">Home</a></li>
-              <li><a href="#" className="text-lbd-white/70 hover:text-lbd-pink transition-colors">Features</a></li>
-              <li><a href="#" className="text-lbd-white/70 hover:text-lbd-pink transition-colors">Resources</a></li>
-              <li><a href="#" className="text-lbd-white/70 hover:text-lbd-pink transition-colors">Community</a></li>
-              <li><a href="#" className="text-lbd-white/70 hover:text-lbd-pink transition-colors">Blog</a></li>
-            </ul>
-          </div>
-
-          {/* Resources */}
-          <div>
-            <h3 className="text-lbd-white font-bold mb-4">Resources</h3>
-            <ul className="space-y-3">
-              <li><a href="#" className="text-lbd-white/70 hover:text-lbd-pink transition-colors">AI Tools</a></li>
-              <li><a href="#" className="text-lbd-white/70 hover:text-lbd-pink transition-colors">Design Resources</a></li>
-              <li><a href="#" className="text-lbd-white/70 hover:text-lbd-pink transition-colors">Tutorials</a></li>
-              <li><a href="#" className="text-lbd-white/70 hover:text-lbd-pink transition-colors">Case Studies</a></li>
-              <li><a href="#" className="text-lbd-white/70 hover:text-lbd-pink transition-colors">Documentation</a></li>
-            </ul>
-          </div>
-
-          {/* Legal */}
-          <div>
-            <h3 className="text-lbd-white font-bold mb-4">Legal</h3>
-            <ul className="space-y-3">
-              <li><a href="#" className="text-lbd-white/70 hover:text-lbd-pink transition-colors">Privacy Policy</a></li>
-              <li><a href="#" className="text-lbd-white/70 hover:text-lbd-pink transition-colors">Terms of Service</a></li>
-              <li><a href="#" className="text-lbd-white/70 hover:text-lbd-pink transition-colors">Cookie Policy</a></li>
-              <li><a href="#" className="text-lbd-white/70 hover:text-lbd-pink transition-colors">GDPR</a></li>
-            </ul>
-          </div>
-        </div>
-
-        <div className="mt-12 pt-8 border-t border-lbd-white/10 text-center text-lbd-white/50 text-sm">
-          &copy; {new Date().getFullYear()} Little Big Dots. All rights reserved.
         </div>
       </div>
     </footer>
-  );
-};
+  )
+}
 
-export default Footer;
+export default Footer

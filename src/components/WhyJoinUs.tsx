@@ -114,7 +114,7 @@ const Timeline = ({ data }: { data: TimelineEntry[] }) => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="text-3xl md:text-5xl font-bold font-heading mb-0 flex flex-col sm:flex-row sm:items-center gap-1"
+          className="text-3xl md:text-5xl font-bold font-heading mb-4 flex flex-col sm:flex-row sm:items-center gap-1"
         >
           Why <span className="text-lbd-pink inline-flex items-center">Join Us<span className="ml-2"><Sparkles size={24} className="text-lbd-pink" /></span></span>?
         </motion.h2>
@@ -123,7 +123,7 @@ const Timeline = ({ data }: { data: TimelineEntry[] }) => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="text-lbd-white/70 text-lg max-w-2xl"
+          className="text-lbd-white/70 text-lg max-w-2xl mb-4"
         >
           No matter where you are in your career, we have resources tailored for your unique challenges.
         </motion.p>
@@ -135,7 +135,7 @@ const Timeline = ({ data }: { data: TimelineEntry[] }) => {
           return (
             <div
               key={index}
-              className="flex justify-start pt-10 md:pt-40 md:gap-10"
+              className="flex justify-start pt-4 md:pt-12 md:gap-10"
             >
               <div className="sticky flex flex-col md:flex-row z-40 items-center top-40 self-start max-w-xs lg:max-w-sm md:w-full">
                 <motion.div 
@@ -240,25 +240,26 @@ const WhyJoinUs = () => {
       </div>
       
       <div className="relative z-10">
-        <motion.div 
-          className="text-center max-w-2xl mx-auto"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-        >
-          <Pill
-            initial="hidden"
-            animate="visible"
-            variants={{
-              hidden: { scale: 0.9, opacity: 0 },
-              visible: { scale: 1, opacity: 1, transition: { duration: 0.5, delay: 0.2 } }
-            }}
+        <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-10">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
             className="mb-1"
           >
-            Find Your Perfect Fit
-          </Pill>
-        </motion.div>
+            <Pill
+              initial="hidden"
+              animate="visible"
+              variants={{
+                hidden: { scale: 0.9, opacity: 0 },
+                visible: { scale: 1, opacity: 1, transition: { duration: 0.5, delay: 0.2 } }
+              }}
+            >
+              Find Your Perfect Fit
+            </Pill>
+          </motion.div>
+        </div>
         
         <Timeline data={designerTypes} />
         
