@@ -33,7 +33,7 @@ const DesignerPanel = ({ title, challenge, solution, icon }: Omit<TimelineEntry,
       transition={{ duration: 0.5, delay: 0.1 }}
       className="glass-card border border-white/10 hover:border-lbd-pink/30 bg-lbd-dark-accent/50 hover:bg-gradient-to-br hover:from-lbd-pink/20 hover:to-purple-700/20 p-6 rounded-xl transition-all duration-300 backdrop-blur-sm"
     >
-      <div className="flex items-start gap-4">
+      <div className="flex flex-col items-start gap-4">
         <motion.div 
           initial={{ scale: 0.8, opacity: 0.5 }}
           animate={isInView ? { scale: 1, opacity: 1 } : { scale: 0.8, opacity: 0.5 }}
@@ -43,7 +43,7 @@ const DesignerPanel = ({ title, challenge, solution, icon }: Omit<TimelineEntry,
           {icon}
         </motion.div>
         
-        <div className="flex-1">
+        <div className="w-full">
           <h3 className="text-xl md:text-2xl font-bold mb-4 font-heading group flex items-center">
             {title}
             <motion.span 
@@ -56,12 +56,12 @@ const DesignerPanel = ({ title, challenge, solution, icon }: Omit<TimelineEntry,
             </motion.span>
           </h3>
           
-          <div className="mb-4">
+          <div className="mb-4 text-left">
             <h4 className="font-medium text-white/70 mb-1">Challenge:</h4>
             <p className="text-white">{challenge}</p>
           </div>
           
-          <div>
+          <div className="text-left">
             <h4 className="font-medium text-white/70 mb-1">Solution:</h4>
             <p className="text-white">{solution}</p>
           </div>
@@ -116,7 +116,7 @@ const Timeline = ({ data }: { data: TimelineEntry[] }) => {
           transition={{ duration: 0.5 }}
           className="text-3xl md:text-5xl font-bold font-heading mb-4 flex flex-col sm:flex-row sm:items-center gap-1"
         >
-          Why <span className="text-lbd-pink inline-flex items-center">Join Us<span className="ml-2"><Sparkles size={24} className="text-lbd-pink" /></span></span>?
+          <span>Why <span className="text-lbd-pink inline-flex items-center">Join Us<span className="ml-2"><Sparkles size={24} className="text-lbd-pink" /></span></span>?</span>
         </motion.h2>
         <motion.p 
           initial={{ opacity: 0, y: 20 }}

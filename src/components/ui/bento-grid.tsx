@@ -27,16 +27,14 @@ function BentoGrid({ items, className }: BentoGridProps) {
                 <div
                     key={index}
                     className={cn(
-                        "group relative p-4 rounded-xl overflow-hidden transition-all duration-300",
-                        "border border-white/5 dark:border-white/5 bg-lbd-dark-accent/20 dark:bg-black",
-                        "hover:shadow-[0_2px_8px_rgba(138,94,255,0.08)] dark:hover:shadow-[0_2px_8px_rgba(255,255,255,0.01)]",
+                        "group relative p-4 rounded-xl overflow-hidden transition-all duration-500",
+                        "border border-white/[0.03] bg-gradient-to-br from-lbd-dark-accent/20 via-black/30 to-black/20",
+                        "hover:shadow-[0_8px_16px_rgba(0,0,0,0.5)] hover:border-white/[0.05]",
                         "hover:-translate-y-0.5 will-change-transform",
                         item.colSpan ? `col-span-1 ${item.colSpan === 2 ? "md:col-span-2" : ""}` : "col-span-1",
                         {
-                            "shadow-[0_2px_8px_rgba(138,94,255,0.05)] -translate-y-0.5":
-                                item.hasPersistentHover,
-                            "dark:shadow-[0_2px_8px_rgba(255,255,255,0.01)]":
-                                item.hasPersistentHover,
+                            "shadow-[0_8px_16px_rgba(0,0,0,0.4)] -translate-y-0.5 border-white/[0.05]":
+                                item.hasPersistentHover
                         }
                     )}
                 >
@@ -45,22 +43,22 @@ function BentoGrid({ items, className }: BentoGridProps) {
                             item.hasPersistentHover
                                 ? "opacity-100"
                                 : "opacity-0 group-hover:opacity-100"
-                        } transition-opacity duration-300`}
+                        } transition-opacity duration-500`}
                     >
-                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(138,94,255,0.01)_1px,transparent_1px)] dark:bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.01)_1px,transparent_1px)] bg-[length:4px_4px]" />
+                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(138,94,255,0.008)_1px,transparent_1px)] bg-[length:3px_3px]" />
                     </div>
 
                     <div className="relative flex flex-col space-y-3">
                         <div className="flex items-center justify-between">
-                            <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-lbd-dark text-purple-400/70 group-hover:bg-gradient-to-br group-hover:from-purple-500/5 group-hover:to-lbd-pink/5 transition-all duration-300">
+                            <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-gradient-to-br from-purple-500/[0.03] to-lbd-pink/[0.03] text-purple-300/50 group-hover:text-purple-300/70 transition-all duration-500">
                                 {item.icon}
                             </div>
                             {item.status && (
                                 <span
                                     className={cn(
                                         "text-xs font-medium px-2 py-1 rounded-lg backdrop-blur-sm",
-                                        "bg-purple-500/5 text-purple-400/70",
-                                        "transition-colors duration-300 group-hover:bg-purple-500/10"
+                                        "bg-gradient-to-r from-purple-500/[0.03] to-lbd-pink/[0.03] text-purple-300/50",
+                                        "transition-all duration-500 group-hover:text-purple-300/70 group-hover:from-purple-500/[0.05] group-hover:to-lbd-pink/[0.05]"
                                     )}
                                 >
                                     {item.status}
@@ -69,15 +67,15 @@ function BentoGrid({ items, className }: BentoGridProps) {
                         </div>
 
                         <div className="space-y-2">
-                            <h3 className="font-medium text-white/90 tracking-tight text-[15px] group-hover:text-purple-300/90 transition-colors duration-300">
+                            <h3 className="font-medium tracking-tight text-[15px] bg-clip-text text-transparent bg-gradient-to-r from-white/90 to-white/70 group-hover:from-purple-300/90 group-hover:to-purple-300/70 transition-all duration-500">
                                 {item.title}
                                 {item.meta && (
-                                    <span className="ml-2 text-xs text-white/60 font-normal">
+                                    <span className="ml-2 text-xs text-white/40 font-normal">
                                         {item.meta}
                                     </span>
                                 )}
                             </h3>
-                            <p className="text-sm text-white/70 leading-snug font-[425] group-hover:text-white/90 transition-colors duration-300">
+                            <p className="text-sm text-white/50 leading-relaxed font-[425] group-hover:text-white/70 transition-colors duration-500">
                                 {item.description}
                             </p>
                         </div>
@@ -85,28 +83,27 @@ function BentoGrid({ items, className }: BentoGridProps) {
                         {(item.tags || item.cta) && (
                             <div className="flex items-center justify-between mt-2">
                                 {item.tags && (
-                                    <div className="flex items-center space-x-2 text-xs text-white/60">
+                                    <div className="flex flex-wrap gap-2 text-xs text-white/40">
                                         {item.tags.map((tag, i) => (
                                             <span
                                                 key={i}
-                                                className="px-2 py-1 rounded-md bg-purple-500/5 backdrop-blur-sm transition-all duration-200 hover:bg-purple-500/10"
+                                                className="px-2 py-1 rounded-md bg-gradient-to-r from-purple-500/[0.03] to-lbd-pink/[0.03] backdrop-blur-sm transition-all duration-500 group-hover:text-white/60 group-hover:from-purple-500/[0.05] group-hover:to-lbd-pink/[0.05]"
                                             >
                                                 #{tag}
                                             </span>
                                         ))}
                                     </div>
                                 )}
-
                             </div>
                         )}
                     </div>
 
                     <div
-                        className={`absolute inset-0 -z-10 rounded-xl p-px bg-gradient-to-br from-transparent via-purple-500/5 to-transparent ${
+                        className={`absolute inset-0 -z-10 rounded-xl p-px bg-gradient-to-br from-purple-500/[0.03] via-lbd-pink/[0.02] to-transparent ${
                             item.hasPersistentHover
                                 ? "opacity-100"
                                 : "opacity-0 group-hover:opacity-100"
-                        } transition-opacity duration-300`}
+                        } transition-opacity duration-500`}
                     />
                 </div>
             ))}

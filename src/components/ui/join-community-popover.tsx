@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { ChevronRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   PopoverRoot,
@@ -75,12 +74,27 @@ export function JoinCommunityPopover({ headingText }: JoinCommunityPopoverProps)
   });
   
   // Handle form validation and submission
-  const validateAndSubmit = () => {
+  const validateAndSubmit = async () => {
     const form = document.getElementById('join-form') as HTMLFormElement;
     if (form && form.checkValidity()) {
-      console.log("Form submitted:", formData);
-      // Here you would typically send the data to your backend
-      setIsOpen(false); // Close the popover after submission
+      try {
+        const response = await fetch('https://dsy3369.app.n8n.cloud/webhook-test/b672f111-73aa-48a2-b2ac-8c8ac6b16e13', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData)
+        });
+
+        if (response.ok) {
+          console.log("Form submitted successfully:", formData);
+          setIsOpen(false); // Close the popover after submission
+        } else {
+          console.error("Form submission failed:", response.statusText);
+        }
+      } catch (error) {
+        console.error("Error submitting form:", error);
+      }
     } else {
       // Trigger HTML5 validation
       const submitEvent = new Event('submit', { cancelable: true, bubbles: true });
@@ -135,9 +149,9 @@ export function JoinCommunityPopover({ headingText }: JoinCommunityPopoverProps)
   };
 
   // Handle form submission
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    validateAndSubmit();
+    await validateAndSubmit();
   };
 
   // Function to handle popover open state
@@ -161,7 +175,7 @@ export function JoinCommunityPopover({ headingText }: JoinCommunityPopoverProps)
             className="bg-gradient-to-r from-lbd-pink to-purple-600 text-white font-medium rounded-lg px-8 py-3 border-0 hover:text-white inline-flex items-center justify-center whitespace-nowrap min-w-[240px]"
           >
             Join Community
-            <ChevronRight size={16} className="ml-2 transition-transform duration-300 group-hover:translate-x-1" />
+
           </PopoverTrigger>
       
       <PopoverContent 
@@ -172,11 +186,7 @@ export function JoinCommunityPopover({ headingText }: JoinCommunityPopoverProps)
         </PopoverHeader>
         
         <PopoverBody className="space-y-4">
-          <form 
-            id="join-form" 
-            onSubmit={handleSubmit}
-            className="space-y-4"
-          >
+          <form id="join-form" className="space-y-4" onSubmit={handleSubmit} noValidate>
             <p className="text-white/60 text-sm hidden">Connect with designers mastering AI through hands-on learning and collaboration.</p>
             
             <div className="relative">
@@ -269,6 +279,7 @@ export function JoinCommunityPopover({ headingText }: JoinCommunityPopoverProps)
           />
           <button 
             type="submit"
+            onClick={handleSubmit}
             disabled={!formValid}
             className={`
               ${formValid 
@@ -279,7 +290,6 @@ export function JoinCommunityPopover({ headingText }: JoinCommunityPopoverProps)
             `}
           >
             Submit
-            <ChevronRight className="w-4 h-4" />
           </button>
         </PopoverFooter>
       </PopoverContent>

@@ -135,7 +135,7 @@ const Hero = () => {
                 <div className="absolute left-[40%] top-[60%] w-[300px] h-[300px] md:w-[400px] md:h-[400px] rounded-full bg-blue-500/10 blur-[100px]" />
 
                 {/* Main content container with grid layout */}
-                <div className="relative z-10 container mx-auto grid grid-cols-1 md:grid-cols-5 gap-8 px-6 py-24 md:py-40">
+                <div className="relative z-10 container mx-auto grid grid-cols-1 md:grid-cols-5 gap-4 sm:gap-6 md:gap-8 px-4 sm:px-6 py-16 sm:py-24 md:py-32 lg:py-40">
                     {/* Left column - Text content */}
                     <div className="flex flex-col justify-center items-start md:col-span-3">
                         <motion.div
@@ -146,14 +146,14 @@ const Hero = () => {
                             className="text-left"
                         >
                             <motion.div 
-                                className="mb-8"
+                                className="mb-4"
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: 0.3, duration: 0.8 }}
                             >
                                 <AnimatedTooltip items={people} className="justify-start mb-4" />
                             </motion.div>
-                            <h1 className="text-6xl sm:text-7xl md:text-8xl font-bold mb-8 tracking-tight leading-tight">
+                            <h1 className="text-4xl xs:text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold mb-4 sm:mb-6 md:mb-8 tracking-tight leading-[1.1]">
                                 <span className="block text-white">
                                     From AI Curiosity
                                 </span>
@@ -172,8 +172,8 @@ const Hero = () => {
                             initial="hidden"
                             animate="visible"
                         >
-                            <p className="text-base sm:text-xl text-white/60 mb-10 leading-relaxed font-light tracking-wide max-w-2xl">
-                                <span className="block">A supportive community helping designers master AI</span>
+                            <p className="text-sm xs:text-base sm:text-lg md:text-xl text-white/60 mb-6 sm:mb-8 md:mb-10 leading-relaxed font-light tracking-wide max-w-2xl">
+                                <span className="block mb-1 sm:mb-2">A supportive community helping designers master AI</span>
                                 <span className="block">with hands-on methodologies, resources, and collaborative learning.</span>
                             </p>
                         </motion.div>
