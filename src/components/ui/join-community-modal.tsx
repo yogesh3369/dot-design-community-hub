@@ -9,6 +9,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { FaWhatsapp } from "react-icons/fa";
 
 interface JoinCommunityModalProps {
   headingText?: string;
@@ -36,11 +37,18 @@ export function JoinCommunityModal({ headingText, children }: JoinCommunityModal
     mobile: false,
     linkedin: false
   });
+  const [webhookResponse, setWebhookResponse] = useState<{
+    message?: string;
+    whatsappLink?: string;
+    success?: boolean;
+  } | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   
   // Handle form validation and submission
   const validateAndSubmit = async () => {
     const form = document.getElementById('join-form-modal') as HTMLFormElement;
     if (form && form.checkValidity()) {
+      setIsSubmitting(true);
       try {
         const response = await fetch('https://dsy3369.app.n8n.cloud/webhook/b672f111-73aa-48a2-b2ac-8c8ac6b16e13', {
           method: 'POST',
@@ -51,13 +59,33 @@ export function JoinCommunityModal({ headingText, children }: JoinCommunityModal
         });
 
         if (response.ok) {
-          console.log("Form submitted successfully:", formData);
-          setIsOpen(false); // Close the modal after submission
+          // Parse the response data
+          const responseData = await response.json();
+          console.log("Form submitted successfully:", responseData);
+          
+          // Store the response data
+          setWebhookResponse({
+            message: responseData.message || 'Thanks for joining our community!',
+            whatsappLink: responseData.whatsappLink || 'https://chat.whatsapp.com/C7Ckg86iEULCxEFp241W6j',
+            success: true
+          });
         } else {
           console.error("Form submission failed:", response.statusText);
+          setWebhookResponse({
+            message: 'Thanks for the response.',
+            whatsappLink: 'https://chat.whatsapp.com/C7Ckg86iEULCxEFp241W6j',
+            success: true
+          });
         }
       } catch (error) {
         console.error("Error submitting form:", error);
+        setWebhookResponse({
+          message: 'Thanks for the response.',
+          whatsappLink: 'https://chat.whatsapp.com/C7Ckg86iEULCxEFp241W6j',
+          success: true
+        });
+      } finally {
+        setIsSubmitting(false);
       }
     } else {
       // Trigger HTML5 validation
@@ -152,108 +180,145 @@ export function JoinCommunityModal({ headingText, children }: JoinCommunityModal
         </DialogHeader>
         
         <div className="py-4">
-          <form id="join-form-modal" onSubmit={handleSubmit} className="space-y-4 text-left">
-            <div className="relative">
-              <input
-                type="text"
-                name="name"
-                value={formData.name}
-                onChange={handleInputChange}
-                onBlur={handleBlur}
-                placeholder="Full Name"
-                className={`w-full bg-white/10 rounded-lg px-4 py-3 text-white placeholder:text-white/40 focus:outline-none focus:ring-2 ${
-                  errors.name && formTouched.name ? 'focus:ring-red-500 border border-red-500' : 
-                  formTouched.name && !errors.name ? 'focus:ring-green-500' : 
-                  'focus:ring-lbd-pink/50'
-                }`}
-                required
-              />
-              <div className="text-xs text-red-400 mt-0.5 min-h-[12px]">
-                {formTouched.name && errors.name ? errors.name : ''}
-              </div>
+          {webhookResponse ? (
+            <div className="flex flex-col items-center justify-center space-y-6 py-4">
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3 }}
+                className="text-center p-4 rounded-lg bg-green-500/20 w-full"
+              >
+                <p className="text-white text-lg font-medium mb-6">{webhookResponse.message}</p>
+                
+                {webhookResponse.whatsappLink && (
+                  <a 
+                    href={webhookResponse.whatsappLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="bg-[#25D366] hover:bg-[#128C7E] text-white font-medium py-3 px-6 rounded-lg flex items-center justify-center gap-2 transition-colors duration-300 w-full"
+                  >
+                    <FaWhatsapp size={20} />
+                    Open WhatsApp
+                  </a>
+                )}
+              </motion.div>
             </div>
-            
-            <div className="relative">
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleInputChange}
-                onBlur={handleBlur}
-                placeholder="Email Address"
-                className={`w-full bg-white/10 rounded-lg px-4 py-3 text-white placeholder:text-white/40 focus:outline-none focus:ring-2 ${
-                  errors.email && formTouched.email ? 'focus:ring-red-500 border border-red-500' : 
-                  formTouched.email && !errors.email ? 'focus:ring-green-500' : 
-                  'focus:ring-lbd-pink/50'
-                }`}
-                required
-              />
-              <div className="text-xs text-red-400 mt-0.5 min-h-[12px]">
-                {formTouched.email && errors.email ? errors.email : ''}
+          ) : (
+            <>
+              <form id="join-form-modal" onSubmit={handleSubmit} className="space-y-4 text-left">
+              <div className="relative">
+                <input
+                  type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleInputChange}
+                  onBlur={handleBlur}
+                  placeholder="Full Name"
+                  className={`w-full bg-white/10 rounded-lg px-4 py-3 text-white placeholder:text-white/40 focus:outline-none focus:ring-2 ${
+                    errors.name && formTouched.name ? 'focus:ring-red-500 border border-red-500' : 
+                    formTouched.name && !errors.name ? 'focus:ring-green-500' : 
+                    'focus:ring-lbd-pink/50'
+                  }`}
+                  required
+                />
+                <div className="text-xs text-red-400 mt-0.5 min-h-[12px]">
+                  {formTouched.name && errors.name ? errors.name : ''}
+                </div>
               </div>
-            </div>
-            
-            <div className="relative">
-              <input
-                type="tel"
-                name="mobile"
-                value={formData.mobile}
-                onChange={handleInputChange}
-                onBlur={handleBlur}
-                placeholder="Mobile Number"
-                className={`w-full bg-white/10 rounded-lg px-4 py-3 text-white placeholder:text-white/40 focus:outline-none focus:ring-2 ${
-                  errors.mobile && formTouched.mobile ? 'focus:ring-red-500 border border-red-500' : 
-                  formTouched.mobile && !errors.mobile ? 'focus:ring-green-500' : 
-                  'focus:ring-lbd-pink/50'
-                }`}
-                required
-              />
-              <div className="text-xs text-red-400 mt-0.5 min-h-[12px]">
-                {formTouched.mobile && errors.mobile ? errors.mobile : ''}
+              
+              <div className="relative">
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  onBlur={handleBlur}
+                  placeholder="Email Address"
+                  className={`w-full bg-white/10 rounded-lg px-4 py-3 text-white placeholder:text-white/40 focus:outline-none focus:ring-2 ${
+                    errors.email && formTouched.email ? 'focus:ring-red-500 border border-red-500' : 
+                    formTouched.email && !errors.email ? 'focus:ring-green-500' : 
+                    'focus:ring-lbd-pink/50'
+                  }`}
+                  required
+                />
+                <div className="text-xs text-red-400 mt-0.5 min-h-[12px]">
+                  {formTouched.email && errors.email ? errors.email : ''}
+                </div>
               </div>
-            </div>
-            
-            <div className="relative">
-              <input
-                type="url"
-                name="linkedin"
-                value={formData.linkedin}
-                onChange={handleInputChange}
-                onBlur={handleBlur}
-                placeholder="LinkedIn Profile URL"
-                className={`w-full bg-white/10 rounded-lg px-4 py-3 text-white placeholder:text-white/40 focus:outline-none focus:ring-2 ${
-                  errors.linkedin && formTouched.linkedin ? 'focus:ring-red-500 border border-red-500' : 
-                  formTouched.linkedin && !errors.linkedin ? 'focus:ring-green-500' : 
-                  'focus:ring-lbd-pink/50'
-                }`}
-              />
-              <div className="text-xs text-red-400 mt-0.5 min-h-[12px]">
-                {formTouched.linkedin && errors.linkedin ? errors.linkedin : ''}
+              
+              <div className="relative">
+                <input
+                  type="tel"
+                  name="mobile"
+                  value={formData.mobile}
+                  onChange={handleInputChange}
+                  onBlur={handleBlur}
+                  placeholder="Mobile Number"
+                  className={`w-full bg-white/10 rounded-lg px-4 py-3 text-white placeholder:text-white/40 focus:outline-none focus:ring-2 ${
+                    errors.mobile && formTouched.mobile ? 'focus:ring-red-500 border border-red-500' : 
+                    formTouched.mobile && !errors.mobile ? 'focus:ring-green-500' : 
+                    'focus:ring-lbd-pink/50'
+                  }`}
+                  required
+                />
+                <div className="text-xs text-red-400 mt-0.5 min-h-[12px]">
+                  {formTouched.mobile && errors.mobile ? errors.mobile : ''}
+                </div>
               </div>
-            </div>
-          </form>
-          
-          <p className="text-white/40 text-xs mt-4">
-            By joining, you agree to our Terms of Service and Privacy Policy
-          </p>
+              
+              <div className="relative">
+                <input
+                  type="url"
+                  name="linkedin"
+                  value={formData.linkedin}
+                  onChange={handleInputChange}
+                  onBlur={handleBlur}
+                  placeholder="LinkedIn Profile URL"
+                  className={`w-full bg-white/10 rounded-lg px-4 py-3 text-white placeholder:text-white/40 focus:outline-none focus:ring-2 ${
+                    errors.linkedin && formTouched.linkedin ? 'focus:ring-red-500 border border-red-500' : 
+                    formTouched.linkedin && !errors.linkedin ? 'focus:ring-green-500' : 
+                    'focus:ring-lbd-pink/50'
+                  }`}
+                />
+                <div className="text-xs text-red-400 mt-0.5 min-h-[12px]">
+                  {formTouched.linkedin && errors.linkedin ? errors.linkedin : ''}
+                </div>
+              </div>
+              </form>
+              
+              <p className="text-white/40 text-xs mt-4">
+                By joining, you agree to our Terms of Service and Privacy Policy
+              </p>
+            </>
+          )}
         </div>
         
-        <DialogFooter className="flex justify-center">
-          <button 
-            type="submit"
-            onClick={handleSubmit}
-            disabled={!formValid}
-            className={`
-              ${formValid 
-                ? 'bg-gradient-to-r from-lbd-pink to-purple-600 cursor-pointer' 
-                : 'bg-gray-600 cursor-not-allowed'
-              }
-              text-white border-0 rounded-lg px-6 py-2.5 text-sm font-medium transition-colors duration-300 flex justify-center items-center gap-2 text-center
-            `}
-          >
-            Submit
-          </button>
-        </DialogFooter>
+        {!webhookResponse && (
+          <DialogFooter className="flex justify-center">
+            <button 
+              type="submit"
+              onClick={handleSubmit}
+              disabled={!formValid || isSubmitting}
+              className={`
+                ${formValid && !isSubmitting
+                  ? 'bg-gradient-to-r from-lbd-pink to-purple-600 cursor-pointer' 
+                  : 'bg-gray-600 cursor-not-allowed'
+                }
+                text-white border-0 rounded-lg px-6 py-2.5 text-sm font-medium transition-colors duration-300 flex justify-center items-center gap-2 text-center
+              `}
+            >
+              {isSubmitting ? (
+                <>
+                  <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  Submitting...
+                </>
+              ) : 'Submit'}
+            </button>
+          </DialogFooter>
+        )}
       </DialogContent>
     </Dialog>
   );
