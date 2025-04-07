@@ -124,7 +124,7 @@ const Hero = () => {
     ];
 
     return (
-        <div className="relative min-h-screen w-full flex items-center overflow-hidden bg-lbd-dark pt-16">
+        <div className="relative min-h-screen w-full flex items-center overflow-hidden bg-lbd-dark pt-48 md:pt-16">
             {/* Background gradients */}
             <div className="absolute inset-0 bg-gradient-to-br from-lbd-pink/[0.05] via-transparent to-purple-500/[0.05] blur-3xl" />
 
@@ -135,7 +135,7 @@ const Hero = () => {
                 <div className="absolute left-[40%] top-[60%] w-[300px] h-[300px] md:w-[400px] md:h-[400px] rounded-full bg-blue-500/10 blur-[100px]" />
 
                 {/* Main content container with grid layout */}
-                <div className="relative z-10 container mx-auto grid grid-cols-1 md:grid-cols-5 gap-4 sm:gap-6 md:gap-8 px-4 sm:px-6 py-16 sm:py-24 md:py-32 lg:py-40">
+                <div className="relative z-10 container mx-auto grid grid-cols-1 md:grid-cols-5 gap-4 sm:gap-6 md:gap-8 px-4 sm:px-6 py-36 sm:py-24 md:py-32 lg:py-40">
                     {/* Left column - Text content */}
                     <div className="flex flex-col justify-center items-start md:col-span-3">
                         <motion.div
