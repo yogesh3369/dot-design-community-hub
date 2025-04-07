@@ -8,6 +8,8 @@ import { Button } from "@/components/ui/button";
 import Pill from "@/components/ui/pill";
 import { AnimatedTooltip } from "@/components/ui/animated-tooltip";
 import { JoinCommunityPopover } from "@/components/ui/join-community-popover";
+import { JoinCommunityModal } from "@/components/ui/join-community-modal";
+import { useMediaQuery } from "@/hooks/useMediaQuery";
 
 function ElegantShape({
     className,
@@ -76,6 +78,8 @@ function ElegantShape({
 }
 
 const Hero = () => {
+    // Check if screen is mobile size
+    const isMobile = useMediaQuery('(max-width: 768px)');
     const fadeUpVariants = {
         hidden: { opacity: 0, y: 30 },
         visible: (i: number) => ({
@@ -124,7 +128,7 @@ const Hero = () => {
     ];
 
     return (
-        <div className="relative min-h-screen w-full flex items-center overflow-hidden bg-lbd-dark pt-48 md:pt-16">
+        <div className="relative min-h-screen w-full flex items-center overflow-hidden bg-lbd-dark pt-64 md:pt-16">
             {/* Background gradients */}
             <div className="absolute inset-0 bg-gradient-to-br from-lbd-pink/[0.05] via-transparent to-purple-500/[0.05] blur-3xl" />
 
@@ -135,15 +139,15 @@ const Hero = () => {
                 <div className="absolute left-[40%] top-[60%] w-[300px] h-[300px] md:w-[400px] md:h-[400px] rounded-full bg-blue-500/10 blur-[100px]" />
 
                 {/* Main content container with grid layout */}
-                <div className="relative z-10 container mx-auto grid grid-cols-1 md:grid-cols-5 gap-4 sm:gap-6 md:gap-8 px-4 sm:px-6 py-36 sm:py-24 md:py-32 lg:py-40">
+                <div className="relative z-10 container mx-auto grid grid-cols-1 md:grid-cols-5 gap-4 sm:gap-6 md:gap-8 px-4 sm:px-6 py-44 sm:py-24 md:py-32 lg:py-40">
                     {/* Left column - Text content */}
-                    <div className="flex flex-col justify-center items-start md:col-span-3">
+                    <div className="flex flex-col justify-center items-center md:items-start md:col-span-3">
                         <motion.div
                             custom={1}
                             variants={fadeUpVariants}
                             initial="hidden"
                             animate="visible"
-                            className="text-left"
+                            className="text-center md:text-left"
                         >
                             <motion.div 
                                 className="mb-4"
@@ -151,7 +155,7 @@ const Hero = () => {
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: 0.3, duration: 0.8 }}
                             >
-                                <AnimatedTooltip items={people} className="justify-start mb-4" />
+                                <AnimatedTooltip items={people} className="justify-center md:justify-start mb-4" />
                             </motion.div>
                             <h1 className="text-4xl xs:text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold mb-4 sm:mb-6 md:mb-8 tracking-tight leading-[1.1]">
                                 <span className="block text-white">
@@ -172,7 +176,7 @@ const Hero = () => {
                             initial="hidden"
                             animate="visible"
                         >
-                            <p className="text-sm xs:text-base sm:text-lg md:text-xl text-white/60 mb-6 sm:mb-8 md:mb-10 leading-relaxed font-light tracking-wide max-w-2xl">
+                            <p className="text-sm xs:text-base sm:text-lg md:text-xl text-white/60 mb-6 sm:mb-8 md:mb-10 leading-relaxed font-light tracking-wide max-w-2xl mx-auto md:mx-0 text-center md:text-left">
                                 <span className="block mb-1 sm:mb-2">A supportive community helping designers master AI</span>
                                 <span className="block">with hands-on methodologies, resources, and collaborative learning.</span>
                             </p>
@@ -186,9 +190,15 @@ const Hero = () => {
                             variants={fadeUpVariants}
                             initial="hidden"
                             animate="visible"
-                            className="w-full max-w-md text-center"
+                            className="w-full max-w-md mx-auto text-center"
                         >
-                            <JoinCommunityPopover headingText="Ready to join our community?" />
+                            <div className="inline-block">
+                                {isMobile ? (
+                                    <JoinCommunityModal headingText="Ready to join our community?" />
+                                ) : (
+                                    <JoinCommunityPopover headingText="Ready to join our community?" />
+                                )}
+                            </div>
                         </motion.div>
                     </div>
                 </div>
