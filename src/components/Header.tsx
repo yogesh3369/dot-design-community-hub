@@ -8,6 +8,7 @@ import {
 import { cn } from "@/lib/utils";
 import { Link } from "react-router-dom";
 import { ChevronRight, Menu, X } from "lucide-react";
+import { JoinCommunityModal } from "@/components/ui/join-community-modal";
 
 export const FloatingNav = ({
   navItems,
@@ -92,17 +93,19 @@ export const FloatingNav = ({
         </div>
 
         {/* Join Button - Desktop */}
-        <button 
-          className="hidden md:flex border text-sm font-medium relative border-white/10 bg-gradient-to-r from-lbd-pink via-purple-600 to-lbd-pink bg-size-200 bg-pos-0 hover:bg-pos-100 transition-all duration-500 text-white px-4 py-2 rounded-full overflow-hidden group"
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
-        >
-          <span className="relative z-10 flex items-center">
-            Join Our Community
-            <ChevronRight className={`ml-1 h-4 w-4 transition-transform duration-300 ${isHovered ? 'translate-x-1' : ''}`} />
-          </span>
-          <span className="absolute inset-x-0 w-1/2 mx-auto -bottom-px bg-gradient-to-r from-transparent via-lbd-pink to-transparent h-px" />
-        </button>
+        <JoinCommunityModal headingText="Join Our Community">
+          <button 
+            className="hidden md:flex border text-sm font-medium relative border-white/10 bg-gradient-to-r from-lbd-pink via-purple-600 to-lbd-pink bg-size-200 bg-pos-0 hover:bg-pos-100 transition-all duration-500 text-white px-4 py-2 rounded-full overflow-hidden group"
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+          >
+            <span className="relative z-10 flex items-center">
+              Join Our Community
+              <ChevronRight className={`ml-1 h-4 w-4 transition-transform duration-300 ${isHovered ? 'translate-x-1' : ''}`} />
+            </span>
+            <span className="absolute inset-x-0 w-1/2 mx-auto -bottom-px bg-gradient-to-r from-transparent via-lbd-pink to-transparent h-px" />
+          </button>
+        </JoinCommunityModal>
 
         {/* Mobile Menu Button */}
         <button
@@ -133,13 +136,15 @@ export const FloatingNav = ({
                 </Link>
               ))}
               <hr className="my-2 border-white/10" />
-              <button 
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="w-full text-left px-4 py-2 text-sm text-lbd-pink hover:bg-white/5 transition-colors flex items-center"
-              >
-                Join Our Community
-                <ChevronRight className="ml-1 h-4 w-4" />
-              </button>
+              <JoinCommunityModal headingText="Join Our Community">
+                <button 
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="w-full text-left px-4 py-2 text-sm text-lbd-pink hover:bg-white/5 transition-colors flex items-center"
+                >
+                  Join Our Community
+                  <ChevronRight className="ml-1 h-4 w-4" />
+                </button>
+              </JoinCommunityModal>
             </motion.div>
           )}
         </AnimatePresence>

@@ -2,6 +2,7 @@
 import { cn } from "@/lib/utils";
 import { TestimonialCard, TestimonialAuthor } from "@/components/ui/testimonial-card";
 import Pill from "@/components/ui/pill";
+import { useEffect, useRef } from "react";
 
 interface TestimonialsProps {
   className?: string;
@@ -10,6 +11,7 @@ interface TestimonialsProps {
 function Testimonials({ className }: TestimonialsProps) {
   const title = "What Our Members Say";
   const description = "Real experiences from designers across different career stages";
+  const scrollRef = useRef<HTMLDivElement>(null);
   
   const testimonials = [
     {
@@ -67,14 +69,43 @@ function Testimonials({ className }: TestimonialsProps) {
 
         <div className="relative flex w-full flex-col items-center justify-center overflow-hidden mt-8">
           <div className="group flex overflow-hidden p-2 [--gap:1rem] [gap:var(--gap)] flex-row [--duration:40s]">
-            <div className="flex shrink-0 justify-around [gap:var(--gap)] animate-marquee flex-row group-hover:[animation-play-state:paused]">
-              {[...Array(4)].map((_, setIndex) => (
-                testimonials.map((testimonial, i) => (
-                  <TestimonialCard 
-                    key={`${setIndex}-${i}`}
-                    {...testimonial}
-                  />
-                ))
+            {/* First copy of testimonials for seamless looping */}
+            <div 
+              ref={scrollRef}
+              className="flex shrink-0 justify-around [gap:var(--gap)] animate-marquee flex-row group-hover:[animation-play-state:paused]"
+              style={{ animationDuration: '40s', animationIterationCount: 'infinite', animationTimingFunction: 'linear' }}
+            >
+              {testimonials.map((testimonial, i) => (
+                <TestimonialCard 
+                  key={`original-${i}`}
+                  {...testimonial}
+                />
+              ))}
+            </div>
+            
+            {/* Duplicate for seamless infinite scrolling */}
+            <div 
+              className="flex shrink-0 justify-around [gap:var(--gap)] animate-marquee flex-row group-hover:[animation-play-state:paused]"
+              style={{ animationDuration: '40s', animationIterationCount: 'infinite', animationTimingFunction: 'linear' }}
+            >
+              {testimonials.map((testimonial, i) => (
+                <TestimonialCard 
+                  key={`duplicate-1-${i}`}
+                  {...testimonial}
+                />
+              ))}
+            </div>
+            
+            {/* Second duplicate for longer sequences */}
+            <div 
+              className="flex shrink-0 justify-around [gap:var(--gap)] animate-marquee flex-row group-hover:[animation-play-state:paused]"
+              style={{ animationDuration: '40s', animationIterationCount: 'infinite', animationTimingFunction: 'linear' }}
+            >
+              {testimonials.map((testimonial, i) => (
+                <TestimonialCard 
+                  key={`duplicate-2-${i}`}
+                  {...testimonial}
+                />
               ))}
             </div>
           </div>

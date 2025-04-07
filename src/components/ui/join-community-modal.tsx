@@ -12,9 +12,10 @@ import { Button } from "@/components/ui/button";
 
 interface JoinCommunityModalProps {
   headingText?: string;
+  children?: React.ReactNode;
 }
 
-export function JoinCommunityModal({ headingText }: JoinCommunityModalProps) {
+export function JoinCommunityModal({ headingText, children }: JoinCommunityModalProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
@@ -41,7 +42,7 @@ export function JoinCommunityModal({ headingText }: JoinCommunityModalProps) {
     const form = document.getElementById('join-form-modal') as HTMLFormElement;
     if (form && form.checkValidity()) {
       try {
-        const response = await fetch('https://dsy3369.app.n8n.cloud/webhook-test/b672f111-73aa-48a2-b2ac-8c8ac6b16e13', {
+        const response = await fetch('https://dsy3369.app.n8n.cloud/webhook/b672f111-73aa-48a2-b2ac-8c8ac6b16e13', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -77,7 +78,8 @@ export function JoinCommunityModal({ headingText }: JoinCommunityModalProps) {
         if (!/[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$/.test(value)) return 'Invalid email';
         return '';
       case 'mobile':
-        if (value && !/^[0-9]{10}$/.test(value)) return 'Invalid number';
+        if (!value.trim()) return 'Mobile required';
+        if (!/^[0-9]{10}$/.test(value)) return 'Invalid number';
         return '';
       case 'linkedin':
         if (value && !/https:\/\/([a-z]+\.)?linkedin\.com\/.*/.test(value)) return 'Invalid LinkedIn URL';
@@ -111,13 +113,13 @@ export function JoinCommunityModal({ headingText }: JoinCommunityModalProps) {
     }));
     
     // Check if all required fields are valid
-    const requiredFields = ['name', 'email'];
+    const requiredFields = ['name', 'email', 'mobile'];
     const allRequiredValid = requiredFields.every(field => 
       formTouched[field as keyof typeof formTouched] && !validateField(field, formData[field as keyof typeof formData])
     );
     
     // Check if optional fields with content are valid
-    const optionalFields = ['mobile', 'linkedin'];
+    const optionalFields = ['linkedin'];
     const allOptionalValid = optionalFields.every(field => 
       !formData[field as keyof typeof formData] || !validateField(field, formData[field as keyof typeof formData])
     );
@@ -134,11 +136,13 @@ export function JoinCommunityModal({ headingText }: JoinCommunityModalProps) {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button 
-          className="bg-gradient-to-r from-lbd-pink to-purple-600 hover:from-lbd-pink/90 hover:to-purple-600/90 text-white font-medium rounded-lg py-3 px-6 shadow-lg shadow-purple-500/20 transition-all duration-300 hover:shadow-purple-500/30 hover:scale-[1.02] active:scale-[0.98]"
-        >
-          Join Our Community
-        </Button>
+        {children || (
+          <Button 
+            className="bg-gradient-to-r from-lbd-pink to-purple-600 hover:from-lbd-pink/90 hover:to-purple-600/90 text-white font-medium rounded-lg py-3 px-6 shadow-lg shadow-purple-500/20 transition-all duration-300 hover:shadow-purple-500/30 hover:scale-[1.02] active:scale-[0.98]"
+          >
+            Join Our Community
+          </Button>
+        )}
       </DialogTrigger>
       <DialogContent className="bg-lbd-dark border border-white/10 text-white max-w-md w-[95vw] rounded-xl">
         <DialogHeader>
@@ -202,6 +206,7 @@ export function JoinCommunityModal({ headingText }: JoinCommunityModalProps) {
                   formTouched.mobile && !errors.mobile ? 'focus:ring-green-500' : 
                   'focus:ring-lbd-pink/50'
                 }`}
+                required
               />
               <div className="text-xs text-red-400 mt-0.5 min-h-[12px]">
                 {formTouched.mobile && errors.mobile ? errors.mobile : ''}

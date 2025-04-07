@@ -78,7 +78,7 @@ export function JoinCommunityPopover({ headingText }: JoinCommunityPopoverProps)
     const form = document.getElementById('join-form') as HTMLFormElement;
     if (form && form.checkValidity()) {
       try {
-        const response = await fetch('https://dsy3369.app.n8n.cloud/webhook-test/b672f111-73aa-48a2-b2ac-8c8ac6b16e13', {
+        const response = await fetch('https://dsy3369.app.n8n.cloud/webhook/b672f111-73aa-48a2-b2ac-8c8ac6b16e13', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -115,7 +115,8 @@ export function JoinCommunityPopover({ headingText }: JoinCommunityPopoverProps)
         if (!/[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$/.test(value)) return 'Invalid email';
         return '';
       case 'mobile':
-        if (value && !/^[0-9]{10}$/.test(value)) return 'Invalid number';
+        if (!value.trim()) return 'Mobile required';
+        if (!/^[0-9]{10}$/.test(value)) return 'Invalid number';
         return '';
       case 'linkedin':
         if (value && !/https:\/\/([a-z]+\.)?linkedin\.com\/.*/.test(value)) return 'Invalid LinkedIn URL';
@@ -145,7 +146,8 @@ export function JoinCommunityPopover({ headingText }: JoinCommunityPopoverProps)
     // Update form validity
     const nameValid = formData.name && !errors.name;
     const emailValid = formData.email && !errors.email;
-    setFormValid(nameValid && emailValid);
+    const mobileValid = formData.mobile && !errors.mobile;
+    setFormValid(nameValid && emailValid && mobileValid);
   };
 
   // Handle form submission
@@ -242,6 +244,7 @@ export function JoinCommunityPopover({ headingText }: JoinCommunityPopoverProps)
                   formTouched.mobile && !errors.mobile ? 'focus:ring-green-500' : 
                   'focus:ring-lbd-pink/50'
                 }`}
+                required
               />
               <div className="text-xs text-red-400 mt-0.5 min-h-[12px]">
                 {formTouched.mobile && errors.mobile ? errors.mobile : ''}
