@@ -18,6 +18,18 @@ const FaqSupport = () => {
     {
       question: "What if I'm unsure how to participate?",
       answer: "Our moderators and guides will help you integrate smoothly and actively into the community."
+    },
+    {
+      question: "Are all events & workshops free to community members?",
+      answer: "Yes, all events and workshops are completely free for community members. There are no hidden fees or charges for participating in any of our activities."
+    },
+    {
+      question: "Do I have to be a part of community?",
+      answer: "No, you don't have to pay anything to be part of our community. Membership is free and accessible to everyone interested in design and AI."
+    },
+    {
+      question: "What can I expect from the community?",
+      answer: "As a member of our community, you can expect access to exclusive workshops, networking opportunities with like-minded professionals, mentorship from industry experts, collaborative projects, and resources to enhance your skills. Our community fosters innovation, learning, and growth in the intersection of design and AI technologies."
     }
   ];
 

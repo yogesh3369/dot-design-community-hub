@@ -50,7 +50,7 @@ function BentoGrid({ items, className }: BentoGridProps) {
 
                     <div className="relative flex flex-col space-y-3">
                         <div className="flex items-center justify-between">
-                            <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-gradient-to-br from-purple-500/[0.03] to-lbd-pink/[0.03] text-purple-300/50 group-hover:text-purple-300/70 transition-all duration-500">
+                            <div className="w-10 h-10 rounded-lg flex items-center justify-center p-2 bg-gradient-to-br from-purple-500/[0.03] to-lbd-pink/[0.03] text-purple-300/50 group-hover:text-purple-300/70 transition-all duration-500">
                                 {item.icon}
                             </div>
                             {item.status && (
@@ -66,8 +66,8 @@ function BentoGrid({ items, className }: BentoGridProps) {
                             )}
                         </div>
 
-                        <div className="space-y-2">
-                            <h3 className="font-medium tracking-tight text-[15px] bg-clip-text text-transparent bg-gradient-to-r from-white/90 to-white/70 group-hover:from-purple-300/90 group-hover:to-purple-300/70 transition-all duration-500">
+                        <div className="space-y-3">
+                            <h3 className="font-bold tracking-tight text-lg md:text-xl bg-clip-text text-transparent bg-gradient-to-r from-white/95 to-white/85 group-hover:from-purple-300/95 group-hover:to-purple-300/85 transition-all duration-500">
                                 {item.title}
                                 {item.meta && (
                                     <span className="ml-2 text-xs text-white/40 font-normal">
@@ -75,7 +75,7 @@ function BentoGrid({ items, className }: BentoGridProps) {
                                     </span>
                                 )}
                             </h3>
-                            <p className="text-sm text-white/50 leading-relaxed font-[425] group-hover:text-white/70 transition-colors duration-500">
+                            <p className="text-sm text-white/60 leading-relaxed font-[425] group-hover:text-white/80 transition-colors duration-500">
                                 {item.description}
                             </p>
                         </div>

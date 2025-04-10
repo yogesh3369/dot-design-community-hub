@@ -45,21 +45,8 @@ const DesignerPanel = ({ title, challenge, solution, icon }: Omit<TimelineEntry,
         </motion.div>
         
         <div className="w-full">
-          <h3 className="text-xl md:text-2xl font-bold mb-4 font-heading group flex items-center">
-            {title}
-            <motion.span 
-              initial={{ opacity: 0, x: -10 }}
-              animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -10 }}
-              transition={{ duration: 0.3, delay: 0.4 }}
-              className="ml-2 inline-flex text-lbd-pink/70"
-            >
-              <Sparkles size={18} />
-            </motion.span>
-          </h3>
-          
           <div className="mb-4 text-left">
-            <h4 className="font-medium text-white/70 mb-1">Challenge:</h4>
-            <p className="text-white">{challenge}</p>
+            <h4 className="font-bold text-xl text-lbd-pink mb-2 font-heading">{challenge}</h4>
           </div>
           
           <div className="text-left">
