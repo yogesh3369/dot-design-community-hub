@@ -24,7 +24,7 @@ const FaqSupport = () => {
       answer: "Yes, all events and workshops are completely free for community members. There are no hidden fees or charges for participating in any of our activities."
     },
     {
-      question: "Do I have to be a part of community?",
+      question: "Do I have to pay to be a part of community?",
       answer: "No, you don't have to pay anything to be part of our community. Membership is free and accessible to everyone interested in design and AI."
     },
     {

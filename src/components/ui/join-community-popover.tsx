@@ -86,7 +86,7 @@ export function JoinCommunityPopover({ headingText }: JoinCommunityPopoverProps)
     if (form && form.checkValidity()) {
       setIsSubmitting(true);
       try {
-        const response = await fetch('https://dsy3369.app.n8n.cloud/webhook/b672f111-73aa-48a2-b2ac-8c8ac6b16e13', {
+        const response = await fetch('https://iphone2612.app.n8n.cloud/webhook/b672f111-73aa-48a2-b2ac-8c8ac6b16e13', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
