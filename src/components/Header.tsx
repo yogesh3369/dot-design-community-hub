@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   motion,
   AnimatePresence,
@@ -83,6 +83,16 @@ export const FloatingNav = ({
             <Link
               key={`link=${idx}`}
               to={navItem.link}
+              onClick={(e) => {
+                e.preventDefault();
+                const targetId = navItem.link.replace('#', '');
+                const targetElement = document.getElementById(targetId === 'features' ? 'community-benefits' : targetId);
+                if (targetElement) {
+                  targetElement.scrollIntoView({ behavior: 'smooth' });
+                  // Save scroll position in session storage
+                  sessionStorage.setItem('scrollPosition', targetElement.offsetTop.toString());
+                }
+              }}
               className={cn(
                 "relative text-lbd-white hover:text-lbd-pink items-center flex space-x-1 transition-colors py-2 px-4 mx-2 rounded-full hover:bg-white/5 border border-transparent hover:border-white/10"
               )}
@@ -129,7 +139,17 @@ export const FloatingNav = ({
                 <Link
                   key={`mobile-link-${idx}`}
                   to={navItem.link}
-                  onClick={() => setIsMobileMenuOpen(false)}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setIsMobileMenuOpen(false);
+                    const targetId = navItem.link.replace('#', '');
+                    const targetElement = document.getElementById(targetId === 'features' ? 'community-benefits' : targetId);
+                    if (targetElement) {
+                      targetElement.scrollIntoView({ behavior: 'smooth' });
+                      // Save scroll position in session storage
+                      sessionStorage.setItem('scrollPosition', targetElement.offsetTop.toString());
+                    }
+                  }}
                   className="block px-4 py-2 text-sm text-white hover:text-lbd-pink hover:bg-white/5 transition-colors"
                 >
                   {navItem.name}
@@ -164,6 +184,45 @@ const Header = () => {
       link: "#testimonials",
     }
   ];
+
+  // Handle scroll position on page load
+  useEffect(() => {
+    // Clear any saved scroll position on page load
+    sessionStorage.removeItem('scrollPosition');
+    
+    // Always start from top on page load
+    window.scrollTo({
+      top: 0,
+      behavior: 'auto'
+    });
+
+    // Handle hash in URL for direct linking
+    const handleHashChange = () => {
+      const hash = window.location.hash;
+      if (hash) {
+        const targetId = hash.replace('#', '');
+        const targetElement = document.getElementById(targetId === 'features' ? 'community-benefits' : targetId);
+        if (targetElement) {
+          setTimeout(() => {
+            targetElement.scrollIntoView({ behavior: 'smooth' });
+            sessionStorage.setItem('scrollPosition', targetElement.offsetTop.toString());
+          }, 100);
+        }
+      }
+    };
+
+    // Check for hash on initial load
+    if (window.location.hash) {
+      handleHashChange();
+    }
+
+    // Listen for hash changes
+    window.addEventListener('hashchange', handleHashChange);
+    
+    return () => {
+      window.removeEventListener('hashchange', handleHashChange);
+    };
+  }, []);
 
   return (
     <header className="w-full fixed top-0 left-0 right-0 z-40">
