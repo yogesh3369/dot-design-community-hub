@@ -128,7 +128,7 @@ const Hero = () => {
     ];
 
     return (
-        <div className="relative min-h-screen w-full flex items-center overflow-hidden bg-lbd-dark pt-24 md:pt-16">
+        <div className="relative min-h-screen w-full flex items-center overflow-hidden bg-lbd-dark pt-24 md:pt-24">
             {/* Background gradients */}
             <div className="absolute inset-0 bg-gradient-to-br from-lbd-pink/[0.05] via-transparent to-purple-500/[0.05] blur-3xl" />
 
@@ -139,9 +139,9 @@ const Hero = () => {
                 <div className="absolute left-[40%] top-[60%] w-[300px] h-[300px] md:w-[400px] md:h-[400px] rounded-full bg-blue-500/10 blur-[100px]" />
 
                 {/* Main content container with grid layout */}
-                <div className="relative z-10 container mx-auto grid grid-cols-1 md:grid-cols-5 gap-4 sm:gap-6 md:gap-8 px-4 sm:px-6 py-16 sm:py-20 md:py-24 lg:py-32">
+                <div className="relative z-10 container mx-auto grid grid-cols-1 md:grid-cols-5 gap-4 sm:gap-6 md:gap-8 px-4 sm:px-6 py-8 sm:py-20 md:py-32 lg:py-40 min-h-[80vh] md:content-center">
                     {/* Left column - Text content */}
-                    <div className="flex flex-col justify-center items-center md:items-start md:col-span-3 order-2 md:order-1">
+                    <div className="flex flex-col justify-start items-center md:items-start md:col-span-3 order-1 md:order-1 pt-24 md:pt-0">
                         <motion.div
                             custom={1}
                             variants={fadeUpVariants}
@@ -183,8 +183,8 @@ const Hero = () => {
                         </motion.div>
                     </div>
 
-                    {/* Right column - CTA */}
-                    <div className="flex flex-col justify-center items-center md:col-span-2 order-1 md:order-2 mb-8 md:mb-0">
+                    {/* CTA - Keep on bottom for mobile, but restore original position for desktop */}
+                    <div className="flex flex-col justify-center items-center md:col-span-2 order-2 md:order-2 mt-6 md:mt-0 mb-12 md:mb-0">
                         <motion.div 
                             custom={3}
                             variants={fadeUpVariants}

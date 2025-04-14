@@ -40,6 +40,22 @@ export function TestimonialsSection({
 }: TestimonialsSectionProps) {
   // State for active testimonial
   const [activeIndex, setActiveIndex] = useState(0)
+  const [isMobile, setIsMobile] = useState(false)
+
+  // Check for mobile view
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
+
+  // Filter testimonials for mobile
+  const displayedTestimonials = isMobile
+    ? testimonials.filter(t => t.name !== "Raxit Tanwar" && t.name !== "Satya Koli")
+    : testimonials
 
   // Refs for scroll animations
   const sectionRef = useRef(null)
@@ -48,14 +64,14 @@ export function TestimonialsSection({
 
   // Automatically cycle through testimonials
   useEffect(() => {
-    if (autoRotateInterval <= 0 || testimonials.length <= 1) return
+    if (autoRotateInterval <= 0 || displayedTestimonials.length <= 1) return
 
     const interval = setInterval(() => {
-      setActiveIndex((prev) => (prev + 1) % testimonials.length)
+      setActiveIndex((prev) => (prev + 1) % displayedTestimonials.length)
     }, autoRotateInterval)
 
     return () => clearInterval(interval)
-  }, [testimonials.length, autoRotateInterval])
+  }, [displayedTestimonials.length, autoRotateInterval])
 
   // Trigger animations when section comes into view
   useEffect(() => {
@@ -66,7 +82,7 @@ export function TestimonialsSection({
 
   // Handlers for navigation
   const handlePrev = () => {
-    setActiveIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length)
+    setActiveIndex((prev) => (prev - 1 + displayedTestimonials.length) % displayedTestimonials.length)
   }
 
   const handleNext = () => {
@@ -97,7 +113,7 @@ export function TestimonialsSection({
     },
   }
 
-  if (testimonials.length === 0) {
+  if (displayedTestimonials.length === 0) {
     return null
   }
 
@@ -152,12 +168,12 @@ export function TestimonialsSection({
             </div>
 
             {/* Testimonial cards */}
-            <div className="relative h-[344px] md:h-[304px]">
-              {testimonials.map((testimonial, index) => (
+            <div className="relative h-[600px] md:h-[350px] w-full">
+              {displayedTestimonials.map((testimonial, index) => (
                 <Card
                   key={testimonial.id}
                   className={cn(
-                    "absolute inset-0 transition-all duration-500",
+                    "absolute inset-0 transition-all duration-500 w-full",
                     "border border-white/10 bg-black/40 backdrop-blur-md",
                     index === activeIndex
                       ? "opacity-100 translate-x-0 shadow-lg"
@@ -165,7 +181,7 @@ export function TestimonialsSection({
                     "hover:border-lbd-pink/30 hover:bg-black/50 hover:shadow-md"
                   )}
                 >
-                  <CardContent className="p-6 md:p-8 h-full flex flex-col">
+                  <CardContent className="p-6 md:p-8 h-full flex flex-col overflow-hidden">
                     <div className="flex justify-between items-start mb-2">
                       <div className="flex items-center gap-4">
                         <Avatar className="h-12 w-12 border-2 border-lbd-pink/10">
@@ -185,7 +201,7 @@ export function TestimonialsSection({
 
                     <Separator className="my-3 bg-white/10" />
 
-                    <p className="flex-1 italic text-base/relaxed text-lbd-white">"{testimonial.content}"</p>
+                    <p className="italic text-base/relaxed text-lbd-white mt-4">"{testimonial.content}"</p>
 
 
                   </CardContent>
@@ -207,7 +223,7 @@ export function TestimonialsSection({
             </Button>
 
             <div className="flex md:flex-col gap-2 items-center justify-center">
-              {testimonials.map((_, index) => (
+              {displayedTestimonials.map((_, index) => (
                 <div
                   key={index}
                   className={cn(
