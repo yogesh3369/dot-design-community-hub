@@ -13,6 +13,13 @@ import {
 } from "@/components/ui/animated-popover";
 import { FaWhatsapp } from "react-icons/fa";
 
+// Add type declaration for gtag
+interface Window {
+  gtag: (command: string, eventName: string, params?: Record<string, any>) => void;
+}
+
+declare const window: Window;
+
 // Create a context to track popover state
 interface PopoverStateContextType {
   isOpen: boolean;
@@ -80,6 +87,37 @@ export function JoinCommunityPopover({ headingText }: JoinCommunityPopoverProps)
   } | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   
+  // Track popover open event
+  const trackPopoverOpen = () => {
+    if (typeof window.gtag === 'function') {
+      window.gtag('event', 'join_community_popup_open', {
+        event_category: 'Community Engagement',
+        event_label: 'Join Community Button Clicked'
+      });
+    }
+  };
+
+  // Track form submission
+  const trackFormSubmit = () => {
+    if (typeof window.gtag === 'function') {
+      window.gtag('event', 'join_community_form_submit', {
+        event_category: 'Community Engagement',
+        event_label: 'Join Community Form Submitted'
+      });
+    }
+  };
+
+  // Track successful submission
+  const trackSuccessfulSubmission = () => {
+    if (typeof window.gtag === 'function') {
+      window.gtag('event', 'join_community_success', {
+        event_category: 'Community Engagement',
+        event_label: 'Successfully Joined Community',
+        value: 1
+      });
+    }
+  };
+
   // Handle form validation and submission
   const validateAndSubmit = async () => {
     const form = document.getElementById('join-form') as HTMLFormElement;
@@ -95,18 +133,14 @@ export function JoinCommunityPopover({ headingText }: JoinCommunityPopoverProps)
         });
 
         if (response.ok) {
-          // Parse the response data
           const responseData = await response.json();
-          console.log("Form submitted successfully:", responseData);
-          
-          // Store the response data
           setWebhookResponse({
             message: responseData.message || 'Thanks for joining our community!',
             whatsappLink: responseData.whatsappLink || 'https://chat.whatsapp.com/C7Ckg86iEULCxEFp241W6j',
             success: true
           });
+          trackSuccessfulSubmission();
         } else {
-          console.error("Form submission failed:", response.statusText);
           setWebhookResponse({
             message: 'Thanks for the response.',
             whatsappLink: 'https://chat.whatsapp.com/C7Ckg86iEULCxEFp241W6j',
@@ -114,7 +148,6 @@ export function JoinCommunityPopover({ headingText }: JoinCommunityPopoverProps)
           });
         }
       } catch (error) {
-        console.error("Error submitting form:", error);
         setWebhookResponse({
           message: 'Thanks for the response.',
           whatsappLink: 'https://chat.whatsapp.com/C7Ckg86iEULCxEFp241W6j',
@@ -124,7 +157,6 @@ export function JoinCommunityPopover({ headingText }: JoinCommunityPopoverProps)
         setIsSubmitting(false);
       }
     } else {
-      // Trigger HTML5 validation
       const submitEvent = new Event('submit', { cancelable: true, bubbles: true });
       form.dispatchEvent(submitEvent);
     }
@@ -181,11 +213,13 @@ export function JoinCommunityPopover({ headingText }: JoinCommunityPopoverProps)
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    trackFormSubmit();
     await validateAndSubmit();
   };
 
   // Function to handle popover open state
   const handlePopoverOpen = () => {
+    trackPopoverOpen();
     setIsOpen(true);
   };
 
