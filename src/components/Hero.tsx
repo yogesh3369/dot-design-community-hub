@@ -128,7 +128,7 @@ const Hero = () => {
     ];
 
     return (
-        <div className="relative min-h-screen w-full flex items-center overflow-hidden bg-lbd-dark pt-64 md:pt-16">
+        <div className="relative min-h-screen w-full flex items-center overflow-hidden bg-lbd-dark pt-24 md:pt-16">
             {/* Background gradients */}
             <div className="absolute inset-0 bg-gradient-to-br from-lbd-pink/[0.05] via-transparent to-purple-500/[0.05] blur-3xl" />
 
@@ -139,9 +139,9 @@ const Hero = () => {
                 <div className="absolute left-[40%] top-[60%] w-[300px] h-[300px] md:w-[400px] md:h-[400px] rounded-full bg-blue-500/10 blur-[100px]" />
 
                 {/* Main content container with grid layout */}
-                <div className="relative z-10 container mx-auto grid grid-cols-1 md:grid-cols-5 gap-4 sm:gap-6 md:gap-8 px-4 sm:px-6 py-44 sm:py-24 md:py-32 lg:py-40">
+                <div className="relative z-10 container mx-auto grid grid-cols-1 md:grid-cols-5 gap-4 sm:gap-6 md:gap-8 px-4 sm:px-6 py-16 sm:py-20 md:py-24 lg:py-32">
                     {/* Left column - Text content */}
-                    <div className="flex flex-col justify-center items-center md:items-start md:col-span-3">
+                    <div className="flex flex-col justify-center items-center md:items-start md:col-span-3 order-2 md:order-1">
                         <motion.div
                             custom={1}
                             variants={fadeUpVariants}
@@ -157,7 +157,7 @@ const Hero = () => {
                             >
                                 <AnimatedTooltip items={people} className="justify-center md:justify-start mb-4" />
                             </motion.div>
-                            <h1 className="text-4xl xs:text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold mb-4 sm:mb-6 md:mb-8 tracking-tight leading-[1.1]">
+                            <h1 className="text-4xl xs:text-5xl sm:text-6xl md:text-6xl lg:text-7xl font-bold mb-4 sm:mb-6 md:mb-8 tracking-tight leading-[1.1]">
                                 <span className="block text-white">
                                     From AI Curiosity
                                 </span>
@@ -184,7 +184,7 @@ const Hero = () => {
                     </div>
 
                     {/* Right column - CTA */}
-                    <div className="flex flex-col justify-center items-center md:col-span-2">
+                    <div className="flex flex-col justify-center items-center md:col-span-2 order-1 md:order-2 mb-8 md:mb-0">
                         <motion.div 
                             custom={3}
                             variants={fadeUpVariants}
