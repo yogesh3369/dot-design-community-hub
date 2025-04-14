@@ -177,8 +177,8 @@ const Hero = () => {
                             animate="visible"
                         >
                             <p className="text-sm xs:text-base sm:text-lg md:text-xl text-white/60 mb-6 sm:mb-8 md:mb-10 leading-relaxed font-light tracking-wide max-w-2xl mx-auto md:mx-0 text-center md:text-left">
-                                <span className="block mb-1 sm:mb-2">A supportive community helping designers master AI</span>
-                                <span className="block">with hands-on methodologies, resources, and collaborative learning.</span>
+                                <span className="block mb-1 sm:mb-2">Little Bid Dots - From AI Curiosity to Design Confidence</span>
+                                <span className="block">A supportive community helping designers master AI with hands-on methodologies, resources, and collaborative learning.</span>
                             </p>
                         </motion.div>
                     </div>
