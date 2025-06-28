@@ -84,14 +84,18 @@ export const FloatingNav = ({
               key={`link=${idx}`}
               to={navItem.link}
               onClick={(e) => {
-                e.preventDefault();
-                const targetId = navItem.link.replace('#', '');
-                const targetElement = document.getElementById(targetId === 'features' ? 'community-benefits' : targetId);
-                if (targetElement) {
-                  targetElement.scrollIntoView({ behavior: 'smooth' });
-                  // Save scroll position in session storage
-                  sessionStorage.setItem('scrollPosition', targetElement.offsetTop.toString());
+                // Check if this is a hash link (for scrolling) or a regular link (for navigation)
+                if (navItem.link.startsWith('#')) {
+                  e.preventDefault();
+                  const targetId = navItem.link.replace('#', '');
+                  const targetElement = document.getElementById(targetId === 'features' ? 'community-benefits' : targetId);
+                  if (targetElement) {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                    // Save scroll position in session storage
+                    sessionStorage.setItem('scrollPosition', targetElement.offsetTop.toString());
+                  }
                 }
+                // For regular links, let the default navigation happen
               }}
               className={cn(
                 "relative text-lbd-white hover:text-lbd-pink items-center flex space-x-1 transition-colors py-2 px-4 mx-2 rounded-full hover:bg-white/5 border border-transparent hover:border-white/10"
@@ -140,15 +144,21 @@ export const FloatingNav = ({
                   key={`mobile-link-${idx}`}
                   to={navItem.link}
                   onClick={(e) => {
-                    e.preventDefault();
+                    // Close the mobile menu regardless of link type
                     setIsMobileMenuOpen(false);
-                    const targetId = navItem.link.replace('#', '');
-                    const targetElement = document.getElementById(targetId === 'features' ? 'community-benefits' : targetId);
-                    if (targetElement) {
-                      targetElement.scrollIntoView({ behavior: 'smooth' });
-                      // Save scroll position in session storage
-                      sessionStorage.setItem('scrollPosition', targetElement.offsetTop.toString());
+                    
+                    // Check if this is a hash link (for scrolling) or a regular link (for navigation)
+                    if (navItem.link.startsWith('#')) {
+                      e.preventDefault();
+                      const targetId = navItem.link.replace('#', '');
+                      const targetElement = document.getElementById(targetId === 'features' ? 'community-benefits' : targetId);
+                      if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                        // Save scroll position in session storage
+                        sessionStorage.setItem('scrollPosition', targetElement.offsetTop.toString());
+                      }
                     }
+                    // For regular links, let the default navigation happen
                   }}
                   className="block px-4 py-2 text-sm text-white hover:text-lbd-pink hover:bg-white/5 transition-colors"
                 >
@@ -182,6 +192,10 @@ const Header = () => {
     {
       name: "Testimonials",
       link: "#testimonials",
+    },
+    {
+      name: "Events",
+      link: "/events",
     }
   ];
 

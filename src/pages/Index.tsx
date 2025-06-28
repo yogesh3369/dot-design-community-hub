@@ -3,6 +3,7 @@ import Hero from '@/components/Hero';
 import WhyJoinUs from '@/components/WhyJoinUs';
 import ValueProposition from '@/components/ValueProposition';
 import CommunityBenefits from '@/components/CommunityBenefits';
+import Events from '@/components/Events';
 import TestimonialsSection from '@/components/TestimonialsSection';
 import FaqSupport from '@/components/FaqSupport';
 import JoinNow from '@/components/JoinNow';
@@ -17,6 +18,7 @@ const Index = () => {
         <WhyJoinUs />
         <ValueProposition />
         <CommunityBenefits />
+        <Events />
         <TestimonialsSection 
           testimonials={[
             {
