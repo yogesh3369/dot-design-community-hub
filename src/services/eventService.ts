@@ -1,3 +1,4 @@
+
 import { supabase } from '@/lib/supabase';
 
 export interface Event {
@@ -13,6 +14,11 @@ export interface Event {
   location?: string;
   max_attendees?: number;
   is_featured?: boolean;
+  // New pricing fields
+  price?: number;
+  original_price?: number;
+  discount_percentage?: number;
+  available_seats?: number;
   created_at?: string;
   updated_at?: string;
 }
@@ -27,6 +33,11 @@ export interface EventUI {
   format: string;
   image?: string;
   description?: string;
+  // New UI pricing fields
+  price?: string;
+  originalPrice?: string;
+  discount?: string;
+  seats?: string;
 }
 
 /**
@@ -58,6 +69,12 @@ const formatEventDate = (dateString: string): { date: string; time: string } => 
 const mapEventToUI = (event: Event): EventUI => {
   const { date, time } = formatEventDate(event.start_date);
   
+  // Format pricing
+  const price = event.price ? `₹${event.price}` : undefined;
+  const originalPrice = event.original_price ? `₹${event.original_price}` : undefined;
+  const discount = event.discount_percentage ? `${event.discount_percentage}% OFF` : undefined;
+  const seats = event.available_seats ? `${event.available_seats} left` : undefined;
+  
   return {
     id: event.id,
     title: event.title,
@@ -67,7 +84,11 @@ const mapEventToUI = (event: Event): EventUI => {
     duration: `${event.duration} minutes`,
     format: event.format,
     image: event.image_path,
-    description: event.description
+    description: event.description,
+    price,
+    originalPrice,
+    discount,
+    seats
   };
 };
 

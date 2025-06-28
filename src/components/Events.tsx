@@ -3,78 +3,20 @@
 
 import React, { useRef, useState, useEffect } from 'react';
 import { motion, useInView } from 'framer-motion';
-import { Calendar, ArrowRight, Clock, Users, IndianRupee } from 'lucide-react';
+import { Calendar, ArrowRight, Clock, Users } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import Pill from "@/components/ui/pill";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
+import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { cn } from "@/lib/utils";
 import { getUpcomingEvents, EventUI } from '@/services/eventService';
 
-// Extended EventUI interface to include pricing
-interface ExtendedEventUI extends EventUI {
-  price?: string;
-  originalPrice?: string;
-  discount?: string;
-  seats?: string;
-}
-
 interface EventsProps {
-  events?: ExtendedEventUI[];
+  events?: EventUI[];
   maxEvents?: number;
 }
 
-// Enhanced fallback events with pricing
-const fallbackEvents: ExtendedEventUI[] = [
-  {
-    id: "event-1",
-    title: "AI in Design: Practical Applications",
-    date: "July 15, 2025",
-    time: "2:00 PM",
-    presenter: "Arun Kumar",
-    duration: "90 minutes",
-    format: "Virtual Workshop",
-    image: "/images/events/ai-design-workshop.jpg",
-    description: "Learn how AI is revolutionizing the design industry with practical examples.",
-    price: "₹999",
-    originalPrice: "₹1,499",
-    discount: "33% OFF",
-    seats: "25 left"
-  },
-  {
-    id: "event-2",
-    title: "Building MVPs with No-Code Tools",
-    date: "July 28, 2025",
-    time: "11:00 AM",
-    presenter: "Terence Dsouza",
-    duration: "60 minutes",
-    format: "Live Webinar",
-    image: "/images/events/nocode-mvp.jpg",
-    description: "Discover how to rapidly prototype and build MVPs using no-code platforms.",
-    price: "₹799",
-    originalPrice: "₹1,199",
-    discount: "25% OFF",
-    seats: "12 left"
-  },
-  {
-    id: "event-3",
-    title: "UX Research Fundamentals",
-    date: "August 10, 2025",
-    time: "3:30 PM",
-    presenter: "Priya Sharma",
-    duration: "75 minutes",
-    format: "Virtual Workshop",
-    image: "/images/events/ux-research.jpg",
-    description: "Master the basics of user experience research methodologies.",
-    price: "₹1,299",
-    originalPrice: "₹1,899",
-    discount: "30% OFF",
-    seats: "8 left"
-  }
-];
-
 const Events = ({ events: initialEvents, maxEvents = 3 }: EventsProps) => {
-  const [events, setEvents] = useState<ExtendedEventUI[]>(initialEvents || []);
+  const [events, setEvents] = useState<EventUI[]>(initialEvents || []);
   const [loading, setLoading] = useState<boolean>(!initialEvents);
   const [error, setError] = useState<string>("");
   
@@ -84,21 +26,10 @@ const Events = ({ events: initialEvents, maxEvents = 3 }: EventsProps) => {
         try {
           setLoading(true);
           const upcomingEvents = await getUpcomingEvents(maxEvents);
-          
-          if (upcomingEvents.length > 0) {
-            // Add pricing info to fetched events (this would normally come from API)
-            const eventsWithPricing = upcomingEvents.map((event, index) => ({
-              ...event,
-              ...fallbackEvents[index % fallbackEvents.length]
-            }));
-            setEvents(eventsWithPricing);
-          } else {
-            setEvents(fallbackEvents.slice(0, maxEvents));
-          }
+          setEvents(upcomingEvents);
         } catch (err) {
           console.error('Failed to fetch events:', err);
           setError('Failed to load events. Please try again later.');
-          setEvents(fallbackEvents.slice(0, maxEvents));
         } finally {
           setLoading(false);
         }
@@ -179,6 +110,10 @@ const Events = ({ events: initialEvents, maxEvents = 3 }: EventsProps) => {
               Try Again
             </Button>
           </div>
+        ) : events.length === 0 ? (
+          <div className="text-center py-10">
+            <p className="text-white/70">No upcoming events at the moment. Check back soon!</p>
+          </div>
         ) : (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -237,19 +172,23 @@ const Events = ({ events: initialEvents, maxEvents = 3 }: EventsProps) => {
                           <Clock className="w-3 h-3" />
                           {event.time}
                         </div>
-                        <div className="flex items-center gap-1">
-                          <Users className="w-3 h-3" />
-                          {event.seats}
-                        </div>
+                        {event.seats && (
+                          <div className="flex items-center gap-1">
+                            <Users className="w-3 h-3" />
+                            {event.seats}
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>
 
                   {/* Card Content */}
                   <CardContent className="p-6 flex-1 flex flex-col">
-                    <p className="text-white/70 text-sm mb-4 line-clamp-2 flex-1">
-                      {event.description}
-                    </p>
+                    {event.description && (
+                      <p className="text-white/70 text-sm mb-4 line-clamp-2 flex-1">
+                        {event.description}
+                      </p>
+                    )}
                     
                     {/* Event Details Grid */}
                     <div className="grid grid-cols-2 gap-3 mb-4 text-xs">
@@ -286,23 +225,29 @@ const Events = ({ events: initialEvents, maxEvents = 3 }: EventsProps) => {
                   {/* Pricing and CTA */}
                   <CardFooter className="p-6 pt-0 border-t border-white/10">
                     <div className="w-full">
-                      {/* Pricing Section */}
-                      <div className="flex items-center justify-between mb-4">
-                        <div className="flex items-baseline gap-2">
-                          <span className="text-2xl font-bold text-lbd-pink flex items-center">
-                            {event.price}
-                          </span>
-                          {event.originalPrice && (
-                            <span className="text-sm text-white/50 line-through">
-                              {event.originalPrice}
-                            </span>
+                      {/* Pricing Section - Only show if pricing data exists */}
+                      {(event.price || event.originalPrice) && (
+                        <div className="flex items-center justify-between mb-4">
+                          <div className="flex items-baseline gap-2">
+                            {event.price && (
+                              <span className="text-2xl font-bold text-lbd-pink flex items-center">
+                                {event.price}
+                              </span>
+                            )}
+                            {event.originalPrice && (
+                              <span className="text-sm text-white/50 line-through">
+                                {event.originalPrice}
+                              </span>
+                            )}
+                          </div>
+                          {event.seats && (
+                            <div className="text-right">
+                              <p className="text-xs text-white/60">Only</p>
+                              <p className="text-sm font-semibold text-orange-400">{event.seats}</p>
+                            </div>
                           )}
                         </div>
-                        <div className="text-right">
-                          <p className="text-xs text-white/60">Only</p>
-                          <p className="text-sm font-semibold text-orange-400">{event.seats}</p>
-                        </div>
-                      </div>
+                      )}
 
                       {/* Register Button */}
                       <Button 
