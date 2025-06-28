@@ -1,15 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
-import { Calendar, Search, Clock, Filter, X } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { motion } from 'framer-motion';
+import { Search, Filter, X, Calendar } from 'lucide-react';
 import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { cn } from "@/lib/utils";
 import { getAllEvents, EventUI, EventFilters } from '@/services/eventService';
 import { format } from 'date-fns';
 import { Select } from '@/components/ui/select';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { createPortal } from 'react-dom';
+import EventCard from '@/components/EventCard';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 
 const EventsPage = () => {
   // State for events and loading status
@@ -187,11 +189,24 @@ const EventsPage = () => {
               </div>
             </div>
             
-            {/* Floating filter panel on the right */}
-            {isFilterOpen && (
-              <div className="fixed top-0 right-0 bottom-0 z-20 w-full md:w-96 animate-in slide-in-from-right duration-300">
-                <div className="absolute inset-0 bg-black/60 backdrop-blur-sm -z-10" onClick={() => setIsFilterOpen(false)}></div>
-                <div className="h-full bg-black/90 border-l border-white/10 shadow-xl overflow-auto p-6 pt-28">
+            {/* Floating filter panel on the right - using portal to ensure it's at the root level of DOM */}
+            {isFilterOpen && createPortal(
+              <>
+                {/* Overlay that covers the entire screen */}
+                <div 
+                  className="fixed inset-0 bg-black/60 backdrop-blur-sm" 
+                  style={{ zIndex: 10000 }}
+                  onClick={() => setIsFilterOpen(false)}
+                  aria-hidden="true"
+                ></div>
+                
+                {/* Filter panel */}
+                <div 
+                  className="fixed top-0 right-0 bottom-0 w-full md:w-96 animate-in slide-in-from-right duration-300" 
+                  style={{ zIndex: 10001 }}
+                >
+                  <div className="h-full bg-black/90 border-l border-white/10 shadow-xl overflow-auto p-6 pt-28">
+              
                   <div className="flex justify-between items-center mb-6">
                     <h2 className="text-xl font-bold flex items-center">
                       <Filter className="mr-2 text-lbd-pink" size={20} /> Filter Events
@@ -301,8 +316,10 @@ const EventsPage = () => {
                       </Button>
                     )}
                   </div>
+                  </div>
                 </div>
-              </div>
+              </>,
+              document.body
             )}
             
             {/* Loading state */}
@@ -338,95 +355,18 @@ const EventsPage = () => {
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-4">
-                {sortEvents(events).map((event) => (
-                <Card 
-                  key={event.id} 
-                  className="bg-gradient-to-b from-black to-black/95 border border-white/10 hover:border-lbd-pink/50 transition-all duration-300 overflow-hidden group shadow-lg shadow-lbd-pink/5 hover:shadow-lbd-pink/10 rounded-xl"
-                  role="article"
-                  aria-labelledby={`event-title-${event.id}`}
-                >
-                  <div className="relative h-44 overflow-hidden rounded-t-xl">
-                    {event.image ? (
-                      <div 
-                        className="absolute inset-0 bg-cover bg-center group-hover:scale-105 transition-transform duration-500"
-                        style={{ backgroundImage: `url(${event.image})` }}
-                        aria-hidden="true"
-                      >
-                        {/* Darker overlay for better text contrast */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-black/30"></div>
-                      </div>
-                    ) : (
-                      <div className="absolute inset-0 bg-gradient-to-br from-lbd-pink/20 to-blue-900/20"></div>
-                    )}
-                    
-                    {/* Date badge */}
-                    <div className="absolute top-3 left-3 z-10">
-                      <div className="flex items-center bg-lbd-pink/90 text-white px-2.5 py-1 rounded-full shadow-lg" aria-label="Event date and time">
-                        <Calendar className="w-3 h-3 mr-1" aria-hidden="true" />
-                        <span className="text-xs font-medium">{event.date}</span>
-                        <span className="mx-1">•</span>
-                        <Clock className="w-3 h-3 mr-1" aria-hidden="true" />
-                        <span className="text-xs font-medium">{event.time}</span>
-                      </div>
-                    </div>
-                    
-                    <div className="absolute bottom-0 left-0 p-4 z-10 w-full">
-                      <h3 
-                        id={`event-title-${event.id}`} 
-                        className="text-xl font-bold text-white leading-tight group-hover:text-lbd-pink transition-colors duration-300"
-                      >
-                        {event.title}
-                      </h3>
-                    </div>
-                  </div>
-                  
-                  <CardContent className="pt-4 pb-2 px-4">
-                    <div className="grid grid-cols-2 gap-3 text-xs">
-                      <div className="bg-white/5 p-2 rounded-lg">
-                        <p className="text-white/70 mb-1 font-medium text-xs uppercase tracking-wider">Presenter</p>
-                        <p className="font-semibold text-white">{event.presenter}</p>
-                      </div>
-                      <div className="bg-white/5 p-2 rounded-lg">
-                        <p className="text-white/70 mb-1 font-medium text-xs uppercase tracking-wider">Duration</p>
-                        <p className="font-semibold text-white">{event.duration}</p>
-                      </div>
-                      <div className="col-span-2 bg-white/5 p-2 rounded-lg">
-                        <p className="text-white/70 mb-1 font-medium text-xs uppercase tracking-wider">Format</p>
-                        <p className="font-semibold text-white flex items-center">
-                          {event.format === "Virtual Workshop" && (
-                            <svg className="w-4 h-4 mr-2 text-lbd-pink" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd" />
-                            </svg>
-                          )}
-                          {event.format === "Live Webinar" && (
-                            <svg className="w-4 h-4 mr-2 text-lbd-pink" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                              <path fillRule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm3 2h6v4H7V5zm8 8v2h1v-2h-1zm-2-2H7v4h6v-4zm2 0h1V9h-1v2zm1-4V5h-1v2h1zM5 5v2H4V5h1zm0 4H4v2h1V9zm-1 4h1v2H4v-2z" clipRule="evenodd" />
-                            </svg>
-                          )}
-                          {event.format}
-                        </p>
-                      </div>
-                      {event.description && (
-                        <div className="col-span-2 bg-white/5 p-2 rounded-lg mt-1">
-                          <p className="text-white/70 mb-1 font-medium text-xs uppercase tracking-wider">Description</p>
-                          <p className="font-semibold text-white text-xs">{event.description}</p>
-                        </div>
-                      )}
-                    </div>
-                  </CardContent>
-                  
-                  <CardFooter className="pt-2 pb-4 px-4">
-                    <Button 
-                      variant="ghost" 
-                      className="bg-gradient-to-r from-lbd-pink to-lbd-pink/80 hover:from-lbd-pink hover:to-lbd-pink text-white w-full justify-center font-medium py-2.5 rounded-lg shadow-md shadow-lbd-pink/20 hover:shadow-lbd-pink/30 transition-all duration-300 border-none text-sm"
-                      aria-label={`Register for ${event.title}`}
-                    >
-                      Register Now
-                    </Button>
-                  </CardFooter>
-                </Card>
-              ))}
-            </div>
+                {sortEvents(events).map((event, index) => (
+                  <motion.div
+                    key={event.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3, delay: index * 0.1 }}
+                    className="h-full"
+                  >
+                    <EventCard event={event} />
+                  </motion.div>
+                ))}
+              </div>
             )}
           </div>
         </section>

@@ -58,7 +58,7 @@ export const FloatingNav = ({
           duration: 0.2,
         }}
         className={cn(
-          "flex max-w-4xl fixed top-4 sm:top-10 inset-x-0 mx-4 sm:mx-auto border border-white/10 rounded-full bg-lbd-dark/90 backdrop-blur-xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] z-[5000] px-4 sm:px-8 py-3 sm:py-4 items-center justify-between",
+          "flex max-w-4xl fixed top-4 sm:top-10 inset-x-0 mx-4 sm:mx-auto border border-white/10 rounded-full bg-lbd-dark/90 backdrop-blur-xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] z-[4000] px-4 sm:px-8 py-3 sm:py-4 items-center justify-between",
           className
         )}
       >
@@ -71,10 +71,14 @@ export const FloatingNav = ({
           transition={{ duration: 0.5 }}
           whileHover={{ scale: 1.05 }}
         >
-          <span className="text-lg sm:text-2xl font-bold font-heading text-lbd-white group relative">
-            Little <span className="text-lbd-pink group-hover:text-white transition-colors duration-300">Big</span> Dots
+          <div className="relative">
+            <img 
+              src="/LBD.svg" 
+              alt="LBD Logo" 
+              className="h-8 sm:h-10 w-auto" 
+            />
             <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-gradient-to-r from-lbd-pink via-purple-500 to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
-          </span>
+          </div>
         </motion.a>
         
         {/* Desktop Navigation */}
@@ -106,14 +110,7 @@ export const FloatingNav = ({
           ))}
         </div>
 
-        {/* Join Button - Desktop */}
-        <JoinCommunityModal headingText="Join Our Community">
-          <div className="hidden md:block">
-            <GradientCTAButton className="text-sm px-4 py-2">
-              Join Our Community
-            </GradientCTAButton>
-          </div>
-        </JoinCommunityModal>
+        {/* Join Button removed from header to avoid duplication with Hero component */}
 
         {/* Mobile Menu Button */}
         <button
@@ -165,16 +162,7 @@ export const FloatingNav = ({
                   {navItem.name}
                 </Link>
               ))}
-              <hr className="my-2 border-white/10" />
-              <JoinCommunityModal headingText="Join Our Community">
-                <button 
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="w-full text-left px-4 py-2 text-sm text-lbd-pink hover:bg-white/5 transition-colors flex items-center"
-                >
-                  Join Our Community
-                  <ChevronRight className="ml-1 h-4 w-4" />
-                </button>
-              </JoinCommunityModal>
+              {/* Join button removed from mobile menu to avoid duplication with Hero component */}
             </motion.div>
           )}
         </AnimatePresence>
@@ -191,7 +179,7 @@ const Header = () => {
     },
     {
       name: "Events",
-      link: "#upcoming-events",
+      link: "/events",
     }
   ];
 

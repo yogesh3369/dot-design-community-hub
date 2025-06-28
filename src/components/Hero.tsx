@@ -194,19 +194,10 @@ const Hero = () => {
                             animate="visible"
                             className="w-full max-w-md mx-auto text-center"
                         >
-                            {isMobile ? (
-                                <JoinCommunityModal headingText="Ready to join our community?">
-                                    <GradientCTAButton>
-                                        Join Our Community
-                                    </GradientCTAButton>
-                                </JoinCommunityModal>
-                            ) : (
-                                <JoinCommunityPopover headingText="Ready to join our community?">
-                                    <GradientCTAButton>
-                                        Join Our Community
-                                    </GradientCTAButton>
-                                </JoinCommunityPopover>
-                            )}
+                            <JoinCommunityPopover 
+                                headingText="Ready to join our community?"
+                                buttonText="Join Our Community"
+                            />
                         </motion.div>
                     </div>
                 </div>

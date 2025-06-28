@@ -38,6 +38,8 @@ export interface EventUI {
   originalPrice?: string;
   discount?: string;
   seats?: string;
+  // Tags for event categorization
+  tags?: string[];
 }
 
 /**
