@@ -12,6 +12,7 @@ import {
   PopoverCloseButton,
 } from "@/components/ui/animated-popover";
 import { FaWhatsapp } from "react-icons/fa";
+import { GradientCTAButton } from "@/components/ui/gradient-cta-button";
 
 // Add type declaration for gtag
 interface Window {
@@ -239,7 +240,11 @@ export function JoinCommunityPopover({ headingText, children }: JoinCommunityPop
             variant="default" 
             className="bg-gradient-to-r from-lbd-pink to-purple-600 text-white font-medium rounded-lg px-8 py-3 border-0 hover:text-white inline-flex items-center justify-center whitespace-nowrap min-w-[240px]"
           >
-            {children || "Join Community"}
+            {children || (
+              <GradientCTAButton className="bg-transparent border-0 shadow-none hover:shadow-none p-0 m-0">
+                Join Community
+              </GradientCTAButton>
+            )}
           </PopoverTrigger>
       
       <PopoverContent 
