@@ -1,3 +1,4 @@
+
 "use client";
 
 import { motion, useMotionValue, useTransform, animate } from "framer-motion";
@@ -10,6 +11,7 @@ import { AnimatedTooltip } from "@/components/ui/animated-tooltip";
 import { JoinCommunityPopover } from "@/components/ui/join-community-popover";
 import { JoinCommunityModal } from "@/components/ui/join-community-modal";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
+import { GradientCTAButton } from "@/components/ui/gradient-cta-button";
 
 function ElegantShape({
     className,
@@ -183,7 +185,7 @@ const Hero = () => {
                         </motion.div>
                     </div>
 
-                    {/* CTA - Keep on bottom for mobile, but restore original position for desktop */}
+                    {/* CTA - Single button with proper animation */}
                     <div className="flex flex-col justify-center items-center md:col-span-2 order-2 md:order-2 mt-6 md:mt-0 mb-12 md:mb-0">
                         <motion.div 
                             custom={3}
@@ -192,31 +194,19 @@ const Hero = () => {
                             animate="visible"
                             className="w-full max-w-md mx-auto text-center"
                         >
-                            <div className="inline-block">
-                                {isMobile ? (
-                                    <JoinCommunityModal headingText="Ready to join our community?">
-                                        <motion.button 
-                                            className="bg-gradient-to-r from-lbd-pink to-purple-600 hover:from-lbd-pink/90 hover:to-purple-600/90 text-white font-medium rounded-lg py-3 px-6 shadow-lg shadow-purple-500/20 transition-all duration-300 hover:shadow-purple-500/30 hover:scale-[1.02] active:scale-[0.98] flex items-center gap-2"
-                                            whileHover={{ scale: 1.05 }}
-                                            whileTap={{ scale: 0.98 }}
-                                        >
-                                            Join Our Community
-                                            <ChevronRight className="ml-1 h-4 w-4" />
-                                        </motion.button>
-                                    </JoinCommunityModal>
-                                ) : (
-                                    <JoinCommunityPopover headingText="Ready to join our community?">
-                                        <motion.button 
-                                            className="bg-gradient-to-r from-lbd-pink to-purple-600 hover:from-lbd-pink/90 hover:to-purple-600/90 text-white font-medium rounded-lg py-3 px-6 shadow-lg shadow-purple-500/20 transition-all duration-300 hover:shadow-purple-500/30 hover:scale-[1.02] active:scale-[0.98] flex items-center gap-2"
-                                            whileHover={{ scale: 1.05 }}
-                                            whileTap={{ scale: 0.98 }}
-                                        >
-                                            Join Our Community
-                                            <ChevronRight className="ml-1 h-4 w-4" />
-                                        </motion.button>
-                                    </JoinCommunityPopover>
-                                )}
-                            </div>
+                            {isMobile ? (
+                                <JoinCommunityModal headingText="Ready to join our community?">
+                                    <GradientCTAButton>
+                                        Join Our Community
+                                    </GradientCTAButton>
+                                </JoinCommunityModal>
+                            ) : (
+                                <JoinCommunityPopover headingText="Ready to join our community?">
+                                    <GradientCTAButton>
+                                        Join Our Community
+                                    </GradientCTAButton>
+                                </JoinCommunityPopover>
+                            )}
                         </motion.div>
                     </div>
                 </div>
