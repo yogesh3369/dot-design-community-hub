@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 import { Link } from "react-router-dom";
 import { ChevronRight, Menu, X } from "lucide-react";
 import { JoinCommunityModal } from "@/components/ui/join-community-modal";
+import { GradientCTAButton } from "@/components/ui/gradient-cta-button";
 
 export const FloatingNav = ({
   navItems,
@@ -23,7 +24,6 @@ export const FloatingNav = ({
 }) => {
   const { scrollYProgress } = useScroll();
   const [visible, setVisible] = useState(true);
-  const [isHovered, setIsHovered] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useMotionValueEvent(scrollYProgress, "change", (current) => {
@@ -108,17 +108,11 @@ export const FloatingNav = ({
 
         {/* Join Button - Desktop */}
         <JoinCommunityModal headingText="Join Our Community">
-          <button 
-            className="hidden md:flex border text-sm font-medium relative border-white/10 bg-gradient-to-r from-lbd-pink via-purple-600 to-lbd-pink bg-size-200 bg-pos-0 hover:bg-pos-100 transition-all duration-500 text-white px-4 py-2 rounded-full overflow-hidden group"
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-          >
-            <span className="relative z-10 flex items-center">
+          <div className="hidden md:block">
+            <GradientCTAButton className="text-sm px-4 py-2">
               Join Our Community
-              <ChevronRight className={`ml-1 h-4 w-4 transition-transform duration-300 ${isHovered ? 'translate-x-1' : ''}`} />
-            </span>
-            <span className="absolute inset-x-0 w-1/2 mx-auto -bottom-px bg-gradient-to-r from-transparent via-lbd-pink to-transparent h-px" />
-          </button>
+            </GradientCTAButton>
+          </div>
         </JoinCommunityModal>
 
         {/* Mobile Menu Button */}
