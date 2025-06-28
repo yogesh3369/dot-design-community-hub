@@ -296,7 +296,7 @@ const WhyJoinUs = () => {
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="bg-gradient-to-r from-lbd-pink to-purple-600 px-6 py-3 rounded-full text-white font-medium shadow-lg shadow-lbd-pink/20 hover:shadow-lbd-pink/30 transition-shadow duration-300"
+                  className="bg-gradient-to-r from-lbd-pink to-purple-600 px-6 py-3 rounded-lg text-white font-medium shadow-lg shadow-lbd-pink/20 hover:shadow-lbd-pink/30 transition-shadow duration-300"
                 >
                   Join Our Community
                 </motion.button>

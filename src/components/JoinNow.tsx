@@ -72,7 +72,7 @@ const JoinNow = () => {
             </JoinCommunityModal>
             
             <motion.button 
-              className="w-full md:w-auto group flex items-center justify-center gap-2 py-3 px-6 text-lbd-white/80 hover:text-lbd-pink transition-colors duration-300 border border-white/10 hover:border-lbd-pink/30 backdrop-blur-sm bg-white/5 hover:bg-white/10 rounded-full font-medium"
+              className="w-full md:w-auto group flex items-center justify-center gap-2 py-3 px-6 text-lbd-white/80 hover:text-lbd-pink transition-colors duration-300 border border-white/10 hover:border-lbd-pink/30 backdrop-blur-sm bg-white/5 hover:bg-white/10 rounded-lg font-medium"
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}

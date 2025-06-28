@@ -110,7 +110,15 @@ export const FloatingNav = ({
           ))}
         </div>
 
-        {/* Join Button removed from header to avoid duplication with Hero component */}
+        {/* Join Community CTA Button */}
+        <div className="hidden md:block">
+          <JoinCommunityModal>
+            <button className="text-sm font-medium text-white py-2 px-4 rounded-full flex items-center bg-gradient-to-r from-lbd-pink to-purple-600 hover:from-lbd-pink/90 hover:to-purple-600/90 transition-all duration-300">
+              Join Community
+              <ChevronRight className="h-3 w-3 ml-1" />
+            </button>
+          </JoinCommunityModal>
+        </div>
 
         {/* Mobile Menu Button */}
         <button
@@ -162,7 +170,15 @@ export const FloatingNav = ({
                   {navItem.name}
                 </Link>
               ))}
-              {/* Join button removed from mobile menu to avoid duplication with Hero component */}
+              {/* Join Community CTA Button in mobile menu */}
+              <div className="px-4 py-2">
+                <JoinCommunityModal>
+                  <button className="w-full text-left text-sm text-white hover:text-lbd-pink hover:bg-white/5 transition-colors py-2">
+                    Join Our Community
+                    <ChevronRight className="h-4 w-4 ml-1 inline" />
+                  </button>
+                </JoinCommunityModal>
+              </div>
             </motion.div>
           )}
         </AnimatePresence>
