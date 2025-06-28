@@ -157,8 +157,14 @@ export const FloatingNav = ({
                         // Save scroll position in session storage
                         sessionStorage.setItem('scrollPosition', targetElement.offsetTop.toString());
                       }
+                    } else if (navItem.link === '/') {
+                      // For home link, scroll to top
+                      e.preventDefault();
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                      // Clear any saved scroll position
+                      sessionStorage.removeItem('scrollPosition');
                     }
-                    // For regular links, let the default navigation happen
+                    // For other regular links, let the default navigation happen
                   }}
                   className="block px-4 py-2 text-sm text-white hover:text-lbd-pink hover:bg-white/5 transition-colors"
                 >
@@ -186,16 +192,12 @@ export const FloatingNav = ({
 const Header = () => {
   const navItems = [
     {
-      name: "Features",
-      link: "#features",
-    },
-    {
-      name: "Testimonials",
-      link: "#testimonials",
+      name: "Home",
+      link: "/",
     },
     {
       name: "Events",
-      link: "/events",
+      link: "#upcoming-events",
     }
   ];
 

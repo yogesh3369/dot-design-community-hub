@@ -194,9 +194,27 @@ const Hero = () => {
                         >
                             <div className="inline-block">
                                 {isMobile ? (
-                                    <JoinCommunityModal headingText="Ready to join our community?" />
+                                    <JoinCommunityModal headingText="Ready to join our community?">
+                                        <motion.button 
+                                            className="bg-gradient-to-r from-lbd-pink to-purple-600 hover:from-lbd-pink/90 hover:to-purple-600/90 text-white font-medium rounded-lg py-3 px-6 shadow-lg shadow-purple-500/20 transition-all duration-300 hover:shadow-purple-500/30 hover:scale-[1.02] active:scale-[0.98] flex items-center gap-2"
+                                            whileHover={{ scale: 1.05 }}
+                                            whileTap={{ scale: 0.98 }}
+                                        >
+                                            Join Our Community
+                                            <ChevronRight className="ml-1 h-4 w-4" />
+                                        </motion.button>
+                                    </JoinCommunityModal>
                                 ) : (
-                                    <JoinCommunityPopover headingText="Ready to join our community?" />
+                                    <JoinCommunityPopover headingText="Ready to join our community?">
+                                        <motion.button 
+                                            className="bg-gradient-to-r from-lbd-pink to-purple-600 hover:from-lbd-pink/90 hover:to-purple-600/90 text-white font-medium rounded-lg py-3 px-6 shadow-lg shadow-purple-500/20 transition-all duration-300 hover:shadow-purple-500/30 hover:scale-[1.02] active:scale-[0.98] flex items-center gap-2"
+                                            whileHover={{ scale: 1.05 }}
+                                            whileTap={{ scale: 0.98 }}
+                                        >
+                                            Join Our Community
+                                            <ChevronRight className="ml-1 h-4 w-4" />
+                                        </motion.button>
+                                    </JoinCommunityPopover>
                                 )}
                             </div>
                         </motion.div>

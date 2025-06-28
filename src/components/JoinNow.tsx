@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { ArrowUp } from 'lucide-react';
 import { JoinCommunityModal } from "@/components/ui/join-community-modal";
+import { GradientCTAButton } from "@/components/ui/gradient-cta-button";
 
 const JoinNow = () => {
   return (
@@ -65,45 +66,9 @@ const JoinNow = () => {
             className="flex flex-col md:flex-row justify-center items-center gap-4"
           >
             <JoinCommunityModal headingText="Join Our Community">
-              <motion.button 
-                className="w-full md:w-auto group relative flex items-center justify-center gap-2 py-3 px-6 text-white font-medium rounded-full transition-all duration-300 shadow-lg shadow-lbd-pink/20 overflow-hidden"
-                whileHover={{ 
-                  scale: 1.03,
-                  backgroundColor: '#FF4B7F',
-                  boxShadow: '0 15px 40px -10px rgba(255, 75, 127, 0.6)'
-                }}
-                whileTap={{ scale: 0.95 }}
-                style={{
-                  backgroundColor: '#FF4B7F',
-                  border: 'none'
-                }}
-              >
-                <span className="relative z-10">Join Our Community</span>
-                
-                {/* Enhanced micro-interactions */}
-                <div className="absolute inset-0 bg-lbd-pink/20 rounded-full blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                <div className="absolute inset-0 bg-lbd-pink/10 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                
-                {/* Animated gradient */}
-                <div className="absolute inset-0 bg-gradient-to-r from-lbd-pink/50 via-lbd-pink/30 to-lbd-pink/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                
-                {/* Glowing particles */}
-                <motion.div 
-                  className="absolute inset-0"
-                  animate={{
-                    scale: [1, 1.05, 1],
-                    opacity: [0, 0.2, 0]
-                  }}
-                  transition={{
-                    duration: 2,
-                    repeat: Infinity,
-                    ease: "easeInOut"
-                  }}
-                >
-                  <div className="absolute -left-4 -top-4 w-16 h-16 bg-lbd-pink/20 rounded-full blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                  <div className="absolute -right-3 -bottom-3 w-12 h-12 bg-lbd-pink/15 rounded-full blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                </motion.div>
-              </motion.button>
+              <GradientCTAButton className="w-full md:w-auto">
+                Join Our Community
+              </GradientCTAButton>
             </JoinCommunityModal>
             
             <motion.button 

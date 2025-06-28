@@ -57,9 +57,10 @@ function HeadingText({ text }: { text: string }) {
 
 interface JoinCommunityPopoverProps {
   headingText?: string;
+  children?: React.ReactNode;
 }
 
-export function JoinCommunityPopover({ headingText }: JoinCommunityPopoverProps) {
+export function JoinCommunityPopover({ headingText, children }: JoinCommunityPopoverProps) {
   const [isOpen, setIsOpen] = React.useState(false);
   const [formData, setFormData] = useState({
     name: '',
@@ -238,8 +239,7 @@ export function JoinCommunityPopover({ headingText }: JoinCommunityPopoverProps)
             variant="default" 
             className="bg-gradient-to-r from-lbd-pink to-purple-600 text-white font-medium rounded-lg px-8 py-3 border-0 hover:text-white inline-flex items-center justify-center whitespace-nowrap min-w-[240px]"
           >
-            Join Community
-
+            {children || "Join Community"}
           </PopoverTrigger>
       
       <PopoverContent 
