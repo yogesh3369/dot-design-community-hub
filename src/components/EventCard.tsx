@@ -75,7 +75,7 @@ export default function EventCard({ event, className = '' }: EventCardProps) {
               )}
               {event.discount && (
                 <span className="text-xs text-lbd-pink bg-lbd-pink/10 px-2 py-0.5 rounded-full">
-                  {event.discount} OFF
+                  {event.discount}
                 </span>
               )}
             </div>
