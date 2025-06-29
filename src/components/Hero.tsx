@@ -95,37 +95,37 @@ const Hero = () => {
         }),
     };
     
-    // Sample profile data for the AnimatedTooltip
+    // Profile data for the AnimatedTooltip with LinkedIn images
     const people = [
         {
             id: 1,
-            name: "Lisa Anderson",
-            designation: "UI Designer",
-            image: "/avatars/avatar-1.jpg",
+            name: "Raktim",
+            designation: "Principal UX Consultant",
+            image: "https://media.licdn.com/dms/image/v2/C5603AQG4FCbKDkL38g/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1641937432312?e=1756339200&v=beta&t=a_rukAzQShdvz2L4xd-vO1EWmK7XjgcgcSKkNz7n96E",
         },
         {
             id: 2,
-            name: "Mark Wilson",
-            designation: "Product Designer",
-            image: "/avatars/avatar-2.jpg",
+            name: "Yogesh",
+            designation: "Senior Associate (UI/UX Designer)",
+            image: "https://media.licdn.com/dms/image/v2/D5603AQFg2R2sZ41TCQ/profile-displayphoto-crop_800_800/B56ZeX.IN0HoAI-/0/1750601337166?e=1756339200&v=beta&t=iO44k8aR80KR1_P7VTztyV-rcJJOoBz_K5fr67RDXtw",
         },
         {
             id: 3,
-            name: "Emily Chen",
-            designation: "UX Researcher",
-            image: "/avatars/avatar-3.jpg",
+            name: "Vinay",
+            designation: "Lead Consultant",
+            image: "https://media.licdn.com/dms/image/v2/D5603AQEBQv1flD4k3w/profile-displayphoto-shrink_400_400/B56ZT.A8IQGsAk-/0/1739428447227?e=1756339200&v=beta&t=QhAwqYBAuLImH1hnORuNw66bNZoLdS-_u9q3D-WOS4k",
         },
         {
             id: 4,
-            name: "David Kim",
-            designation: "Design Lead",
-            image: "/avatars/avatar-4.jpg",
+            name: "Shruti Khopkar",
+            designation: "Product Designer",
+            image: "https://media.licdn.com/dms/image/v2/D4D03AQFHDmbhh9hdpw/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1698748377871?e=1756339200&v=beta&t=o2xF8rdf-ORShEtH4oWe-KCOl8VUGaYgq3mtuTyGssM",
         },
         {
             id: 5,
-            name: "Sarah Johnson",
-            designation: "AI Specialist",
-            image: "/avatars/avatar-5.jpg",
+            name: "Terence Dsouza",
+            designation: "Product Designer",
+            image: "https://media.licdn.com/dms/image/v2/D5603AQG3x2aAYeqTeg/profile-displayphoto-shrink_400_400/B56ZSeV.wuGoAo-/0/1737823350473?e=1756339200&v=beta&t=_3aZvERtSc1k-gFEtxEibDj7VXABxqxZlZbUUiNjz_4",
         },
     ];
 

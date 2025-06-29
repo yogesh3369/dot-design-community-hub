@@ -13,7 +13,7 @@ function Footer() {
             {/* Logo and Description */}
             <div className="col-span-1">
               <div className="flex items-center mb-4">
-                <img src="/LBD.svg" alt="Dot Design Community Hub Logo" className="h-10 w-auto" />
+                <img src="/LBD.svg" alt="Dot Design Community Hub Logo" className="h-16 w-auto" />
               </div>
               <p className="text-gray-300 text-sm mt-2">
                 Empowering designers and developers through community, resources, and events.
@@ -41,9 +41,9 @@ function Footer() {
             <div>
               <h3 className="text-white font-semibold mb-4">Contact Us</h3>
               <ul className="space-y-2 text-gray-300 text-sm">
-                <li>Email: info@dotdesignhub.com</li>
-                <li>Phone: +1 (555) 123-4567</li>
-                <li>Location: San Francisco, CA</li>
+                <li>Email: littlebigdots2024@gmail.com</li>
+                <li>Phone: +91 9667102848</li>
+                <li>Location: India</li>
               </ul>
             </div>
           </div>

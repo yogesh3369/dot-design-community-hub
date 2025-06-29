@@ -44,46 +44,185 @@ export function JoinCommunityModal({ headingText, children }: JoinCommunityModal
   } | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   
+  // Define webhook URL as a constant to avoid reference errors
+  // Make sure to use the correct webhook URL - this is the final version
+  const WEBHOOK_URL = 'https://automation.karao.digital/webhook/b31614af-1370-4154-99f4-0159d129de6b';
+  
   // Handle form validation and submission
   const validateAndSubmit = async () => {
     const form = document.getElementById('join-form-modal') as HTMLFormElement;
     if (form && form.checkValidity()) {
       setIsSubmitting(true);
       try {
-        const response = await fetch('https://iphone2612.app.n8n.cloud/webhook/b672f111-73aa-48a2-b2ac-8c8ac6b16e13', {
+        console.log('Sending data to webhook:', formData);
+        console.log('Webhook URL:', WEBHOOK_URL);
+        
+        // Add a timestamp to help avoid caching issues
+        const dataWithTimestamp = {
+          ...formData,
+          timestamp: new Date().toISOString()
+        };
+        
+        // Use fetch with improved options
+        const response = await fetch(WEBHOOK_URL, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            'Accept': 'application/json'
           },
-          body: JSON.stringify(formData)
+          body: JSON.stringify(dataWithTimestamp),
+          mode: 'cors',
+          cache: 'no-cache',
+          credentials: 'omit' // Changed from same-origin to omit for cross-domain requests
         });
+        
+        console.log('Response status:', response.status);
 
+        // Check for any response (not just ok responses)
+        console.log("Response received:", response);
+        
         if (response.ok) {
           // Parse the response data
-          const responseData = await response.json();
-          console.log("Form submitted successfully:", responseData);
+          let responseData = {
+            message: 'Thanks for joining our community!',
+            whatsappLink: 'https://chat.whatsapp.com/C7Ckg86iEULCxEFp241W6j'
+          };
+          
+          try {
+            // Try to parse as JSON first
+            const responseText = await response.text();
+            console.log("Response text:", responseText);
+            
+            if (responseText && responseText.trim() !== '') {
+              try {
+                // Try to parse as JSON
+                const jsonData = JSON.parse(responseText);
+                console.log("Form submitted successfully:", jsonData);
+                
+                // Check if the response has a "Message sent" key
+                if (jsonData["Message sent"]) {
+                  responseData = {
+                    message: jsonData["Message sent"],
+                    whatsappLink: 'https://chat.whatsapp.com/C7Ckg86iEULCxEFp241W6j'
+                  };
+                  console.log("Extracted message from 'Message sent' key:", responseData.message);
+                } else if (jsonData.message) {
+                  responseData = {
+                    message: jsonData.message,
+                    whatsappLink: jsonData.whatsappLink || 'https://chat.whatsapp.com/C7Ckg86iEULCxEFp241W6j'
+                  };
+                }
+              } catch (parseError) {
+                console.log("Response is not valid JSON, using as plain text");
+                // If not valid JSON, use the text directly
+                responseData = { 
+                  message: responseText || 'Thanks for joining our community!',
+                  whatsappLink: 'https://chat.whatsapp.com/C7Ckg86iEULCxEFp241W6j'
+                };
+              }
+            }
+          } catch (error) {
+            console.error("Error reading response:", error);
+          }
           
           // Store the response data
           setWebhookResponse({
-            message: responseData.message || 'Thanks for joining our community!',
-            whatsappLink: responseData.whatsappLink || 'https://chat.whatsapp.com/C7Ckg86iEULCxEFp241W6j',
+            message: responseData.message,
+            whatsappLink: responseData.whatsappLink,
             success: true
           });
         } else {
-          console.error("Form submission failed:", response.statusText);
+          console.error("Form submission failed:", response.status, response.statusText);
+          // Try to get error details if available
+          try {
+            const errorData = await response.text();
+            console.error("Error details:", errorData);
+          } catch (readError) {
+            console.error("Could not read error response", readError);
+          }
           setWebhookResponse({
-            message: 'Thanks for the response.',
+            message: 'Thanks for joining our community!',
             whatsappLink: 'https://chat.whatsapp.com/C7Ckg86iEULCxEFp241W6j',
             success: true
           });
         }
       } catch (error) {
         console.error("Error submitting form:", error);
-        setWebhookResponse({
-          message: 'Thanks for the response.',
-          whatsappLink: 'https://chat.whatsapp.com/C7Ckg86iEULCxEFp241W6j',
-          success: true
-        });
+        
+        // Try an alternative approach with XMLHttpRequest as a fallback
+        console.log("Trying alternative XMLHttpRequest approach...");
+        try {
+          const xhr = new XMLHttpRequest();
+          xhr.open('POST', WEBHOOK_URL, true);
+          xhr.setRequestHeader('Content-Type', 'application/json');
+          xhr.onload = function() {
+            if (xhr.status >= 200 && xhr.status < 300) {
+              console.log('XHR Success:', xhr.responseText);
+              try {
+                // Try to parse as JSON first
+                const responseData = JSON.parse(xhr.responseText);
+                console.log("XHR JSON response:", responseData);
+                
+                // Check if the response has a "Message sent" key
+                if (responseData["Message sent"]) {
+                  setWebhookResponse({
+                    message: responseData["Message sent"],
+                    whatsappLink: 'https://chat.whatsapp.com/C7Ckg86iEULCxEFp241W6j',
+                    success: true
+                  });
+                  console.log("XHR: Extracted message from 'Message sent' key:", responseData["Message sent"]);
+                } else {
+                  setWebhookResponse({
+                    message: responseData.message || 'Thanks for joining our community!',
+                    whatsappLink: responseData.whatsappLink || 'https://chat.whatsapp.com/C7Ckg86iEULCxEFp241W6j',
+                    success: true
+                  });
+                }
+              } catch (e) {
+                console.log('Response is not JSON, using as plain text:', xhr.responseText);
+                // If not JSON, use the raw text as the message
+                setWebhookResponse({
+                  message: xhr.responseText || 'Thanks for joining our community!',
+                  whatsappLink: 'https://chat.whatsapp.com/C7Ckg86iEULCxEFp241W6j',
+                  success: true
+                });
+              }
+            } else {
+              console.error('XHR Error:', xhr.status, xhr.statusText);
+              setWebhookResponse({
+                message: 'Thanks for joining our community!',
+                whatsappLink: 'https://chat.whatsapp.com/C7Ckg86iEULCxEFp241W6j',
+                success: true
+              });
+            }
+            setIsSubmitting(false);
+          };
+          xhr.onerror = function() {
+            console.error('XHR Network Error');
+            setWebhookResponse({
+              message: 'Thanks for joining our community!',
+              whatsappLink: 'https://chat.whatsapp.com/C7Ckg86iEULCxEFp241W6j',
+              success: true
+            });
+            setIsSubmitting(false);
+          };
+          // Use the same data format as the fetch request
+          const dataWithTimestamp = {
+            ...formData,
+            timestamp: new Date().toISOString(),
+            method: 'xhr-fallback' // Add a flag to identify this as the fallback method
+          };
+          console.log('Sending data with timestamp via XHR:', dataWithTimestamp);
+          xhr.send(JSON.stringify(dataWithTimestamp));
+          return; // Exit early as XHR will handle the response
+        } catch (xhrError) {
+          console.error("XHR approach also failed:", xhrError);
+          setWebhookResponse({
+            message: 'Thanks for the response.',
+            whatsappLink: 'https://chat.whatsapp.com/C7Ckg86iEULCxEFp241W6j',
+            success: true
+          });
+        }
       } finally {
         setIsSubmitting(false);
       }
