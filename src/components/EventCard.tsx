@@ -2,6 +2,7 @@ import { Calendar, Clock, Users, User as UserIcon, ArrowRight } from 'lucide-rea
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { EventUI } from '@/services/eventService';
+import { JoinCommunityModal } from '@/components/ui/join-community-modal';
 
 interface EventCardProps {
   event: EventUI;
@@ -78,13 +79,23 @@ export default function EventCard({ event, className = '' }: EventCardProps) {
                 </span>
               )}
             </div>
-            <Button
-              variant="ghost"
-              className="bg-gradient-to-r from-lbd-pink to-purple-600 hover:from-lbd-pink/90 hover:to-purple-600/90 text-white rounded-full px-6 py-2 transition-all duration-300 transform hover:scale-105"
+            <JoinCommunityModal 
+              headingText={`Register for ${event.title}`}
+              eventData={{
+                eventName: event.title,
+                eventId: event.id,
+                eventDate: event.date,
+                eventTime: event.time
+              }}
             >
-              Register
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
+              <Button
+                variant="ghost"
+                className="bg-gradient-to-r from-lbd-pink to-purple-600 hover:from-lbd-pink/90 hover:to-purple-600/90 text-white rounded-full px-6 py-2 transition-all duration-300 transform hover:scale-105"
+              >
+                Register
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+            </JoinCommunityModal>
           </div>
         </div>
       </CardFooter>

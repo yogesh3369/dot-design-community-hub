@@ -14,9 +14,15 @@ import { FaWhatsapp } from "react-icons/fa";
 interface JoinCommunityModalProps {
   headingText?: string;
   children?: React.ReactNode;
+  eventData?: {
+    eventName: string;
+    eventId: string;
+    eventDate: string;
+    eventTime: string;
+  };
 }
 
-export function JoinCommunityModal({ headingText, children }: JoinCommunityModalProps) {
+export function JoinCommunityModal({ headingText, children, eventData }: JoinCommunityModalProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
@@ -44,9 +50,9 @@ export function JoinCommunityModal({ headingText, children }: JoinCommunityModal
   } | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   
-  // Define webhook URL as a constant to avoid reference errors
-  // Make sure to use the correct webhook URL - this is the final version
-  const WEBHOOK_URL = 'https://automation.karao.digital/webhook/b31614af-1370-4154-99f4-0159d129de6b';
+  // Define webhook URL as a constant specifically for event registrations
+  // This webhook is different from the general community join webhook
+  const WEBHOOK_URL = 'https://automation.karao.digital/webhook/19fa7538-2af7-491c-a8ca-2f0e2c8a8cca';
   
   // Handle form validation and submission
   const validateAndSubmit = async () => {
@@ -57,10 +63,11 @@ export function JoinCommunityModal({ headingText, children }: JoinCommunityModal
         console.log('Sending data to webhook:', formData);
         console.log('Webhook URL:', WEBHOOK_URL);
         
-        // Add a timestamp to help avoid caching issues
+        // Add a timestamp and event data if available
         const dataWithTimestamp = {
           ...formData,
-          timestamp: new Date().toISOString()
+          timestamp: new Date().toISOString(),
+          ...(eventData && { eventData })
         };
         
         // Use fetch with improved options
@@ -316,121 +323,123 @@ export function JoinCommunityModal({ headingText, children }: JoinCommunityModal
           <DialogTitle className="text-xl font-semibold text-center text-white">
             {headingText || "Join Our Community"}
           </DialogTitle>
+          {eventData && (
+            <p className="text-white/70 text-sm mt-2 text-center">
+              Event: {eventData.eventName}<br/>
+              Date: {eventData.eventDate} | Time: {eventData.eventTime}
+            </p>
+          )}
         </DialogHeader>
         
-        <div className="py-4">
-          {webhookResponse ? (
-            <div className="flex flex-col items-center justify-center space-y-6 py-4">
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3 }}
-                className="text-center p-4 rounded-lg bg-green-500/20 w-full"
-              >
-                <p className="text-white text-lg font-medium mb-6">{webhookResponse.message}</p>
-                
-                {webhookResponse.whatsappLink && (
-                  <a 
-                    href={webhookResponse.whatsappLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="bg-[#25D366] hover:bg-[#128C7E] text-white font-medium py-3 px-6 rounded-lg flex items-center justify-center gap-2 transition-colors duration-300 w-full"
-                  >
-                    <FaWhatsapp size={20} />
-                    Open WhatsApp
-                  </a>
-                )}
-              </motion.div>
+        {webhookResponse ? (
+          <div className="flex flex-col items-center justify-center space-y-6 py-4">
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3 }}
+              className="text-center p-4 rounded-lg bg-green-500/20 w-full"
+            >
+              <p className="text-white text-lg font-medium mb-6">{webhookResponse.message}</p>
+              
+              {webhookResponse.whatsappLink && (
+                <a 
+                  href={webhookResponse.whatsappLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-[#25D366] hover:bg-[#128C7E] text-white font-medium py-3 px-6 rounded-lg flex items-center justify-center gap-2 transition-colors duration-300 w-full"
+                >
+                  <FaWhatsapp size={20} />
+                  Open WhatsApp
+                </a>
+              )}
+            </motion.div>
+          </div>
+        ) : (
+          <form id="join-form-modal" onSubmit={handleSubmit} className="space-y-4 text-left">
+          <div className="relative">
+            <input
+              type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleInputChange}
+              onBlur={handleBlur}
+              placeholder="Full Name"
+              className={`w-full bg-white/10 rounded-lg px-4 py-3 text-white placeholder:text-white/40 focus:outline-none focus:ring-2 ${
+                errors.name && formTouched.name ? 'focus:ring-red-500 border border-red-500' : 
+                formTouched.name && !errors.name ? 'focus:ring-green-500' : 
+                'focus:ring-lbd-pink/50'
+              }`}
+              required
+            />
+            <div className="text-xs text-red-400 mt-0.5 min-h-[12px]">
+              {formTouched.name && errors.name ? errors.name : ''}
             </div>
-          ) : (
-            <>
-              <form id="join-form-modal" onSubmit={handleSubmit} className="space-y-4 text-left">
-              <div className="relative">
-                <input
-                  type="text"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleInputChange}
-                  onBlur={handleBlur}
-                  placeholder="Full Name"
-                  className={`w-full bg-white/10 rounded-lg px-4 py-3 text-white placeholder:text-white/40 focus:outline-none focus:ring-2 ${
-                    errors.name && formTouched.name ? 'focus:ring-red-500 border border-red-500' : 
-                    formTouched.name && !errors.name ? 'focus:ring-green-500' : 
-                    'focus:ring-lbd-pink/50'
-                  }`}
-                  required
-                />
-                <div className="text-xs text-red-400 mt-0.5 min-h-[12px]">
-                  {formTouched.name && errors.name ? errors.name : ''}
-                </div>
-              </div>
-              
-              <div className="relative">
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  onBlur={handleBlur}
-                  placeholder="Email Address"
-                  className={`w-full bg-white/10 rounded-lg px-4 py-3 text-white placeholder:text-white/40 focus:outline-none focus:ring-2 ${
-                    errors.email && formTouched.email ? 'focus:ring-red-500 border border-red-500' : 
-                    formTouched.email && !errors.email ? 'focus:ring-green-500' : 
-                    'focus:ring-lbd-pink/50'
-                  }`}
-                  required
-                />
-                <div className="text-xs text-red-400 mt-0.5 min-h-[12px]">
-                  {formTouched.email && errors.email ? errors.email : ''}
-                </div>
-              </div>
-              
-              <div className="relative">
-                <input
-                  type="tel"
-                  name="mobile"
-                  value={formData.mobile}
-                  onChange={handleInputChange}
-                  onBlur={handleBlur}
-                  placeholder="Mobile Number"
-                  className={`w-full bg-white/10 rounded-lg px-4 py-3 text-white placeholder:text-white/40 focus:outline-none focus:ring-2 ${
-                    errors.mobile && formTouched.mobile ? 'focus:ring-red-500 border border-red-500' : 
-                    formTouched.mobile && !errors.mobile ? 'focus:ring-green-500' : 
-                    'focus:ring-lbd-pink/50'
-                  }`}
-                  required
-                />
-                <div className="text-xs text-red-400 mt-0.5 min-h-[12px]">
-                  {formTouched.mobile && errors.mobile ? errors.mobile : ''}
-                </div>
-              </div>
-              
-              <div className="relative">
-                <input
-                  type="url"
-                  name="linkedin"
-                  value={formData.linkedin}
-                  onChange={handleInputChange}
-                  onBlur={handleBlur}
-                  placeholder="LinkedIn Profile URL"
-                  className={`w-full bg-white/10 rounded-lg px-4 py-3 text-white placeholder:text-white/40 focus:outline-none focus:ring-2 ${
-                    errors.linkedin && formTouched.linkedin ? 'focus:ring-red-500 border border-red-500' : 
-                    formTouched.linkedin && !errors.linkedin ? 'focus:ring-green-500' : 
-                    'focus:ring-lbd-pink/50'
-                  }`}
-                />
-                <div className="text-xs text-red-400 mt-0.5 min-h-[12px]">
-                  {formTouched.linkedin && errors.linkedin ? errors.linkedin : ''}
-                </div>
-              </div>
-              </form>
-              
-              <p className="text-white/40 text-xs mt-4">
-                By joining, you agree to our Terms of Service and Privacy Policy
-              </p>
-            </>
-          )}
-        </div>
+          </div>
+          
+          <div className="relative">
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleInputChange}
+              onBlur={handleBlur}
+              placeholder="Email Address"
+              className={`w-full bg-white/10 rounded-lg px-4 py-3 text-white placeholder:text-white/40 focus:outline-none focus:ring-2 ${
+                errors.email && formTouched.email ? 'focus:ring-red-500 border border-red-500' : 
+                formTouched.email && !errors.email ? 'focus:ring-green-500' : 
+                'focus:ring-lbd-pink/50'
+              }`}
+              required
+            />
+            <div className="text-xs text-red-400 mt-0.5 min-h-[12px]">
+              {formTouched.email && errors.email ? errors.email : ''}
+            </div>
+          </div>
+          
+          <div className="relative">
+            <input
+              type="tel"
+              name="mobile"
+              value={formData.mobile}
+              onChange={handleInputChange}
+              onBlur={handleBlur}
+              placeholder="Mobile Number"
+              className={`w-full bg-white/10 rounded-lg px-4 py-3 text-white placeholder:text-white/40 focus:outline-none focus:ring-2 ${
+                errors.mobile && formTouched.mobile ? 'focus:ring-red-500 border border-red-500' : 
+                formTouched.mobile && !errors.mobile ? 'focus:ring-green-500' : 
+                'focus:ring-lbd-pink/50'
+              }`}
+              required
+            />
+            <div className="text-xs text-red-400 mt-0.5 min-h-[12px]">
+              {formTouched.mobile && errors.mobile ? errors.mobile : ''}
+            </div>
+          </div>
+          
+          <div className="relative">
+            <input
+              type="url"
+              name="linkedin"
+              value={formData.linkedin}
+              onChange={handleInputChange}
+              onBlur={handleBlur}
+              placeholder="LinkedIn Profile URL"
+              className={`w-full bg-white/10 rounded-lg px-4 py-3 text-white placeholder:text-white/40 focus:outline-none focus:ring-2 ${
+                errors.linkedin && formTouched.linkedin ? 'focus:ring-red-500 border border-red-500' : 
+                formTouched.linkedin && !errors.linkedin ? 'focus:ring-green-500' : 
+                'focus:ring-lbd-pink/50'
+              }`}
+            />
+            <div className="text-xs text-red-400 mt-0.5 min-h-[12px]">
+              {formTouched.linkedin && errors.linkedin ? errors.linkedin : ''}
+            </div>
+          </div>
+          
+          <p className="text-white/40 text-xs mt-4">
+            By joining, you agree to our Terms of Service and Privacy Policy
+          </p>
+          </form>
+        )}
         
         {!webhookResponse && (
           <DialogFooter className="flex justify-center">

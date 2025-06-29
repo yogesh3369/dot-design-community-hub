@@ -121,7 +121,7 @@ export function JoinCommunityPopover({ headingText, buttonText = "Join Our Commu
     }
   };
 
-  // Define webhook URL as a constant
+  // Define webhook URL as a constant for general community joins
   const WEBHOOK_URL = 'https://automation.karao.digital/webhook/b31614af-1370-4154-99f4-0159d129de6b';
   
   // Handle form validation and submission
