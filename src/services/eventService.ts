@@ -83,7 +83,7 @@ const mapEventToUI = (event: Event): EventUI => {
   const { date, time } = formatEventDate(event.start_date);
   
   // Format pricing
-  const price = event.price ? `₹${event.price}` : undefined;
+  const price = event.price ? `₹${event.price}` : 'Free';
   const originalPrice = event.original_price ? `₹${event.original_price}` : undefined;
   const discount = event.discount_percentage ? `${event.discount_percentage}% OFF` : undefined;
   const seats = event.available_seats ? `${event.available_seats} left` : undefined;
