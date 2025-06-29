@@ -50,9 +50,13 @@ export function JoinCommunityModal({ headingText, children, eventData }: JoinCom
   } | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   
-  // Define webhook URL as a constant specifically for event registrations
-  // This webhook is different from the general community join webhook
-  const WEBHOOK_URL = 'https://automation.karao.digital/webhook/19fa7538-2af7-491c-a8ca-2f0e2c8a8cca';
+  // Define webhook URLs for different scenarios
+  // Use different webhooks based on whether this is an event registration or general community join
+  const EVENT_WEBHOOK_URL = 'https://automation.karao.digital/webhook/19fa7538-2af7-491c-a8ca-2f0e2c8a8cca';
+  const COMMUNITY_WEBHOOK_URL = 'https://automation.karao.digital/webhook/b31614af-1370-4154-99f4-0159d129de6b';
+  
+  // Determine which webhook to use based on whether eventData is present
+  const WEBHOOK_URL = eventData ? EVENT_WEBHOOK_URL : COMMUNITY_WEBHOOK_URL;
   
   // Handle form validation and submission
   const validateAndSubmit = async () => {
