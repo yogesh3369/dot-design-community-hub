@@ -44,9 +44,20 @@ export interface EventUI {
 
 /**
  * Formats a date string from Supabase into a user-friendly format
+ * Returns "TBD" for time when the date is invalid
  */
 const formatEventDate = (dateString: string): { date: string; time: string } => {
+  // Check if dateString is valid
+  if (!dateString || dateString.trim() === '') {
+    return { date: 'TBD', time: 'TBD' };
+  }
+  
   const date = new Date(dateString);
+  
+  // Check if date is invalid (NaN means invalid date)
+  if (isNaN(date.getTime())) {
+    return { date: 'TBD', time: 'TBD' };
+  }
   
   // Format date as "Month Day, Year"
   const dateFormatted = date.toLocaleDateString('en-US', {
